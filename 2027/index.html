@@ -775,37 +775,65 @@
                         <li>「誰有存取權」請改為 <b>「所有人 (Anyone)」</b>，最後點擊 <b>部署</b> 並給予授權。</li>
                         <li>複製獲得的 <b>網頁應用程式網址 (Web App URL)</b>，將其貼入下方欄位並點擊儲存！</li>
                     </ol>
+                    <p class="text-[11px] text-forest-800 bg-forest-100/80 px-3 py-2 rounded-xl font-medium">
+                        💡 名額同步說明：更新上方 `Code.gs` 並重新部署後，網頁會自動讀取 Google 試算表中該活動欄位標記為 <b>「V」</b> 的筆數來計算剩餘名額（上限 40 位）。
+                    </p>
 
                     <div class="relative mt-2">
                         <pre id="gas-code" class="bg-earth-900 text-emerald-300 p-3.5 rounded-xl text-[11px] font-mono leading-relaxed overflow-x-auto max-h-40 border border-earth-800 select-all">// Google Apps Script Code for Sheet ID: 1i70R06W6_c83wjZWbTSvYEImuS1_5-5SfJ-or4HkARA
 const SPREADSHEET_ID = '1i70R06W6_c83wjZWbTSvYEImuS1_5-5SfJ-or4HkARA';
+const EVENT2_COL_HEADER = '1/16 (六) 掏心柑，封茶香 客家酸柑茶手作體驗與蔬食饗宴';
+
+function getTargetSheet_() {
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  return ss.getSheetByName('報名名單') || ss.getSheets()[0];
+}
+
+function countEvent2MarkedV_() {
+  const sheet = getTargetSheet_();
+  const lastRow = sheet.getLastRow();
+  const lastCol = sheet.getLastColumn();
+  if (lastRow &lt; 2 || lastCol &lt; 1) return 0;
+
+  const headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+  let targetColIdx = headers.findIndex(h =&gt; String(h).trim() === EVENT2_COL_HEADER);
+  if (targetColIdx === -1) {
+    targetColIdx = lastCol - 1; // 預設最後一欄為 1/16 活動 V 欄位
+  }
+
+  const values = sheet.getRange(2, targetColIdx + 1, lastRow, 1).getValues();
+  let vCount = 0;
+  for (let i = 0; i &lt; values.length; i++) {
+    const cellVal = String(values[i][0] || '').trim().toUpperCase();
+    if (cellVal === 'V') {
+      vCount++;
+    }
+  }
+  return vCount;
+}
 
 function doPost(e) {
   try {
-    const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-    let sheet = ss.getSheetByName('報名名單');
-    if (!sheet) {
-      sheet = ss.getSheets()[0];
-    }
+    const sheet = getTargetSheet_();
     
     // Ensure Header Row Exists
     if (sheet.getLastRow() === 0) {
       sheet.appendRow([
         '報名編號', '報名時間', '區域', '上課地點', '年度', '系列', '班級', 
         '完整班別', '聯繫電話', 'LINE ID', '電子信箱', '報名項目彙整', 
-        '1/4(一)起~慈心理念班', '1/16 (六) 掏心柑，封茶香 客家酸柑茶手作體驗與蔬食饗宴'
+        '1/4(一)起~慈心理念班', EVENT2_COL_HEADER
       ]);
       sheet.getRange(1, 1, 1, 14).setFontWeight('bold').setBackground('#e1f2e5');
     }
     
-    const raw = (e && e.parameter && e.parameter.payload)
+    const raw = (e &amp;&amp; e.parameter &amp;&amp; e.parameter.payload)
       ? e.parameter.payload
-      : (e && e.postData && e.postData.contents ? e.postData.contents : '{}');
+      : (e &amp;&amp; e.postData &amp;&amp; e.postData.contents ? e.postData.contents : '{}');
     const postData = JSON.parse(raw);
     const eventsArr = postData.events || [];
     
     const hasEvent1 = eventsArr.includes('1/4(一)起~慈心理念班') ? 'V' : '';
-    const hasEvent2 = eventsArr.includes('1/16 (六) 掏心柑，封茶香 客家酸柑茶手作體驗與蔬食饗宴') ? 'V' : '';
+    const hasEvent2 = eventsArr.includes(EVENT2_COL_HEADER) ? 'V' : '';
     
     // Force text formatting with single quotes to prevent leading zeros from disappearing
     const classNumText = "'" + (postData.classNum || (postData.classCode ? postData.classCode.slice(-3) : ''));
@@ -829,7 +857,7 @@ function doPost(e) {
     ]);
 
     // 自動寄送報名回條至使用者填寫的 Email
-    if (postData.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(postData.email).trim())) {
+    if (postData.email &amp;&amp; /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(postData.email).trim())) {
       const recipientEmail = String(postData.email).trim();
       const subject = '【慈心30週年系列活動】報名成功回條 (' + (postData.id || '') + ')';
       const body = [
@@ -865,7 +893,25 @@ function doPost(e) {
 }
 
 function doGet(e) {
-  return ContentService.createTextOutput('慈心30週年 Web App API 運作正常！');
+  try {
+    const vCount = countEvent2MarkedV_();
+    const callback = e &amp;&amp; e.parameter &amp;&amp; e.parameter.callback;
+    const payload = JSON.stringify({
+      status: 'ok',
+      bookedCount: vCount,
+      remainingQuota: Math.max(0, 40 - vCount)
+    });
+
+    if (callback) {
+      return ContentService.createTextOutput(callback + '(' + payload + ')')
+        .setMimeType(ContentService.MimeType.JAVASCRIPT);
+    }
+    return ContentService.createTextOutput(payload)
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
 }</pre>
                     </div>
                 </div>
@@ -999,6 +1045,7 @@ function doGet(e) {
 
             const EVENT2_QUOTA_LIMIT = 40;
             const EVENT2_NAME = '1/16 (六) 掏心柑，封茶香 客家酸柑茶手作體驗與蔬食饗宴';
+            let sheetBookedCount = null;
             const classError = document.getElementById('class-error');
             const phoneError = document.getElementById('phone-error');
             const lineError = document.getElementById('line-error');
@@ -1328,7 +1375,11 @@ function doGet(e) {
                 // Save to localStorage backup
                 saveSubmission(payload);
                 lastSubmissionData = payload;
+                if (selectedEvents.includes(EVENT2_NAME) && typeof sheetBookedCount === 'number') {
+                    sheetBookedCount += 1;
+                }
                 updateQuotaDisplay();
+                syncQuotaFromSheet();
 
                 // Render Receipt
                 renderReceipt(payload);
@@ -1503,9 +1554,58 @@ function doGet(e) {
             }
 
             function countEvent2Registrations() {
+                if (typeof sheetBookedCount === 'number') {
+                    return sheetBookedCount;
+                }
                 return getStoredSubmissions().filter(item =>
                     Array.isArray(item.events) && item.events.includes(EVENT2_NAME)
                 ).length;
+            }
+
+            function getRemainingQuota() {
+                const booked = countEvent2Registrations();
+                return Math.max(0, EVENT2_QUOTA_LIMIT - booked);
+            }
+
+            function syncQuotaFromSheet() {
+                const url = (savedWebAppUrl || scriptUrlInput?.value || '').trim();
+                if (!url || !url.startsWith('https://script.google.com/')) {
+                    updateQuotaDisplay();
+                    return;
+                }
+
+                const callbackName = 'cixinQuotaCb_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+                const scriptEl = document.createElement('script');
+                const sep = url.includes('?') ? '&' : '?';
+
+                const cleanup = () => {
+                    try { delete window[callbackName]; } catch (_) { window[callbackName] = undefined; }
+                    if (scriptEl.parentNode) {
+                        scriptEl.parentNode.removeChild(scriptEl);
+                    }
+                };
+
+                const timeoutId = setTimeout(() => {
+                    cleanup();
+                    updateQuotaDisplay();
+                }, 5000);
+
+                window[callbackName] = (data) => {
+                    clearTimeout(timeoutId);
+                    cleanup();
+                    if (data && data.status === 'ok' && typeof data.bookedCount === 'number') {
+                        sheetBookedCount = data.bookedCount;
+                    }
+                    updateQuotaDisplay();
+                };
+
+                scriptEl.src = `${url}${sep}action=quota&callback=${encodeURIComponent(callbackName)}&_=${Date.now()}`;
+                scriptEl.onerror = () => {
+                    clearTimeout(timeoutId);
+                    cleanup();
+                    updateQuotaDisplay();
+                };
+                document.body.appendChild(scriptEl);
             }
 
             function getRemainingQuota() {
@@ -1546,6 +1646,7 @@ function doGet(e) {
             }
 
             updateQuotaDisplay();
+            syncQuotaFromSheet();
 
             function saveSubmission(item) {
                 const current = getStoredSubmissions();
