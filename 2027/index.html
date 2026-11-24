@@ -1089,6 +1089,7 @@ function doGet(e) {
             const DEFAULT_GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxIMbGUYaAHG1XdSkhtSH1uEOi5qLEHfr8KvdYFiPNICIlyx2WaxVlmcVqFcTI3KvTc/exec';
             let savedWebAppUrl = localStorage.getItem(WEB_APP_URL_KEY) || DEFAULT_GAS_WEB_APP_URL;
             let lastSubmissionData = null;
+            let lastSheetLatestId = null;
 
             // Event Card Selection Toggle
             eventCards.forEach((card) => {
@@ -1253,10 +1254,11 @@ function doGet(e) {
                 const classCode = `${classYearVal}${classSeriesVal}${classNumVal}`;
                 const timestamp = new Date();
                 const formattedTime = `${timestamp.getFullYear()}/${String(timestamp.getMonth()+1).padStart(2,'0')}/${String(timestamp.getDate()).padStart(2,'0')} ${String(timestamp.getHours()).padStart(2,'0')}:${String(timestamp.getMinutes()).padStart(2,'0')}`;
-                const submissionId = `CX30-${Math.floor(1000 + Math.random() * 9000)}`;
+                // 暫時以目前已知最新編號推算預估編號，送出後再向 GAS 同步後端實際寫入的 CX30-xxx 編號
+                const provisionalId = computeProvisionalSubmissionId(lastSheetLatestId);
 
                 const payload = {
-                    id: submissionId,
+                    id: provisionalId,
                     region: regionSelect.value,
                     location: isLocationRequired ? locationSelect.value : '中苑本部',
                     classYear: classYearVal,
@@ -1280,6 +1282,12 @@ function doGet(e) {
                 if (webAppUrl && webAppUrl.startsWith('http')) {
                     try {
                         await sendToGoogleSheet(webAppUrl, payload);
+                        // 因 no-cors 無法直接讀取 POST 回應本體，短暫等待後透過 JSONP 取得後端實際產生的編號與最新名額
+                        await new Promise(resolve => setTimeout(resolve, 1200));
+                        const syncedInfo = await syncQuotaFromSheet({ returnData: true });
+                        if (syncedInfo && syncedInfo.latestId) {
+                            payload.id = syncedInfo.latestId;
+                        }
                     } catch (err) {
                         console.warn("GAS submission fallback:", err);
                     }
@@ -1289,13 +1297,12 @@ function doGet(e) {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalBtnHtml;
 
-                // Update local quota state and refresh from sheet
+                // Update local quota state
                 lastSubmissionData = payload;
                 if (selectedEvents.includes(EVENT2_NAME) && typeof sheetBookedCount === 'number') {
                     sheetBookedCount += 1;
                 }
                 updateQuotaDisplay();
-                syncQuotaFromSheet();
 
                 // Render Receipt
                 renderReceipt(payload);
@@ -1428,6 +1435,17 @@ function doGet(e) {
             // ----------------------------------------------------
             // 8. Quota Calculation & Sheet Sync Logic
             // ----------------------------------------------------
+            function computeProvisionalSubmissionId(latestId) {
+                if (latestId) {
+                    const match = String(latestId).trim().match(/^CX30-(\d+)$/i);
+                    if (match) {
+                        const nextNum = parseInt(match[1], 10) + 1;
+                        return 'CX30-' + String(nextNum).padStart(3, '0');
+                    }
+                }
+                return 'CX30-001';
+            }
+
             function countEvent2Registrations() {
                 return typeof sheetBookedCount === 'number' ? sheetBookedCount : 0;
             }
@@ -1447,82 +1465,99 @@ function doGet(e) {
                     quotaTextEl.textContent = `剩餘 ${displayRemaining} / ${EVENT2_QUOTA_LIMIT} 位`;
                 }
 
-                const isSoldOut = displayRemaining <= 0 && !isSelected;
+                const isFull = baseRemaining <= 0 && !isSelected;
 
                 if (event2Checkbox) {
-                    event2Checkbox.disabled = isSoldOut;
+                    event2Checkbox.disabled = isFull;
                 }
 
                 if (event2Card) {
-                    event2Card.classList.toggle('opacity-60', isSoldOut);
-                    event2Card.classList.toggle('cursor-not-allowed', isSoldOut);
-                    event2Card.classList.toggle('cursor-pointer', !isSoldOut);
+                    event2Card.classList.toggle('opacity-60', isFull);
+                    event2Card.classList.toggle('cursor-not-allowed', isFull);
+                    event2Card.classList.toggle('cursor-pointer', !isFull);
                 }
 
                 if (quotaBadgeEl) {
+                    quotaBadgeEl.classList.remove(
+                        'bg-rose-100', 'text-rose-700', 'border-rose-200',
+                        'bg-amberTea-100', 'text-amberTea-700', 'border-amberTea-500/30',
+                        'bg-earth-200', 'text-earth-700', 'border-earth-300'
+                    );
                     if (displayRemaining <= 0) {
-                        quotaBadgeEl.className = 'inline-flex items-center gap-1 text-xs font-bold text-white bg-rose-600 border border-rose-700 px-2.5 py-0.5 rounded-full';
-                    } else if (displayRemaining <= 10) {
-                        quotaBadgeEl.className = 'inline-flex items-center gap-1 text-xs font-bold text-amber-900 bg-amber-200 border border-amber-300 px-2.5 py-0.5 rounded-full';
+                        quotaBadgeEl.classList.add('bg-earth-200', 'text-earth-700', 'border-earth-300');
+                    } else if (displayRemaining <= 5) {
+                        quotaBadgeEl.classList.add('bg-amberTea-100', 'text-amberTea-700', 'border-amberTea-500/30');
                     } else {
-                        quotaBadgeEl.className = 'inline-flex items-center gap-1 text-xs font-bold text-rose-700 bg-rose-100 border border-rose-200 px-2.5 py-0.5 rounded-full';
+                        quotaBadgeEl.classList.add('bg-rose-100', 'text-rose-700', 'border-rose-200');
                     }
                 }
             }
 
-            function syncQuotaFromSheet() {
+            function syncQuotaFromSheet(options = {}) {
                 const url = (savedWebAppUrl || '').trim();
                 if (!url || !url.startsWith('https://script.google.com/')) {
                     if (quotaSyncStatusEl) quotaSyncStatusEl.textContent = '名額統計中';
                     updateQuotaDisplay();
-                    return;
+                    return Promise.resolve(null);
                 }
 
                 if (quotaSyncStatusEl) quotaSyncStatusEl.textContent = '同步中...';
 
-                const callbackName = 'cixinQuotaCb_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
-                const scriptEl = document.createElement('script');
-                const sep = url.includes('?') ? '&' : '?';
+                return new Promise((resolve) => {
+                    const callbackName = 'cixinQuotaCb_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+                    const scriptEl = document.createElement('script');
+                    const sep = url.includes('?') ? '&' : '?';
 
-                const cleanup = () => {
-                    try { delete window[callbackName]; } catch (_) { window[callbackName] = undefined; }
-                    if (scriptEl.parentNode) {
-                        scriptEl.parentNode.removeChild(scriptEl);
-                    }
-                };
-
-                const timeoutId = setTimeout(() => {
-                    cleanup();
-                    if (quotaSyncStatusEl) quotaSyncStatusEl.textContent = '待確認試算表';
-                    updateQuotaDisplay();
-                }, 5000);
-
-                window[callbackName] = (data) => {
-                    clearTimeout(timeoutId);
-                    cleanup();
-                    if (data && data.status === 'ok' && typeof data.bookedCount === 'number') {
-                        sheetBookedCount = data.bookedCount;
-                        if (quotaSyncStatusEl) {
-                            const now = new Date();
-                            const hh = String(now.getHours()).padStart(2, '0');
-                            const mm = String(now.getMinutes()).padStart(2, '0');
-                            const ss = String(now.getSeconds()).padStart(2, '0');
-                            quotaSyncStatusEl.textContent = `已同步 ${hh}:${mm}:${ss}`;
+                    const cleanup = () => {
+                        try { delete window[callbackName]; } catch (_) { window[callbackName] = undefined; }
+                        if (scriptEl.parentNode) {
+                            scriptEl.parentNode.removeChild(scriptEl);
                         }
-                    } else if (quotaSyncStatusEl) {
-                        quotaSyncStatusEl.textContent = '名額統計中';
-                    }
-                    updateQuotaDisplay();
-                };
+                    };
 
-                scriptEl.src = `${url}${sep}action=quota&callback=${encodeURIComponent(callbackName)}&_=${Date.now()}`;
-                scriptEl.onerror = () => {
-                    clearTimeout(timeoutId);
-                    cleanup();
-                    if (quotaSyncStatusEl) quotaSyncStatusEl.textContent = '名額統計中';
-                    updateQuotaDisplay();
-                };
-                document.body.appendChild(scriptEl);
+                    const timeoutId = setTimeout(() => {
+                        cleanup();
+                        if (quotaSyncStatusEl) quotaSyncStatusEl.textContent = '待確認試算表';
+                        updateQuotaDisplay();
+                        resolve(null);
+                    }, 5000);
+
+                    window[callbackName] = (data) => {
+                        clearTimeout(timeoutId);
+                        cleanup();
+                        if (data && data.status === 'ok') {
+                            if (typeof data.bookedCount === 'number') {
+                                sheetBookedCount = data.bookedCount;
+                            }
+                            if (data.latestId) {
+                                lastSheetLatestId = String(data.latestId).trim();
+                            }
+                            if (quotaSyncStatusEl) {
+                                const now = new Date();
+                                const hh = String(now.getHours()).padStart(2, '0');
+                                const mm = String(now.getMinutes()).padStart(2, '0');
+                                const ss = String(now.getSeconds()).padStart(2, '0');
+                                quotaSyncStatusEl.textContent = `已同步 ${hh}:${mm}:${ss}`;
+                            }
+                            updateQuotaDisplay();
+                            resolve(data);
+                        } else {
+                            if (quotaSyncStatusEl) quotaSyncStatusEl.textContent = '名額統計中';
+                            updateQuotaDisplay();
+                            resolve(null);
+                        }
+                    };
+
+                    scriptEl.src = `${url}${sep}action=quota&callback=${encodeURIComponent(callbackName)}&_=${Date.now()}`;
+                    scriptEl.onerror = () => {
+                        clearTimeout(timeoutId);
+                        cleanup();
+                        if (quotaSyncStatusEl) quotaSyncStatusEl.textContent = '名額統計中';
+                        updateQuotaDisplay();
+                        resolve(null);
+                    };
+                    document.body.appendChild(scriptEl);
+                });
             }
 
             updateQuotaDisplay();
