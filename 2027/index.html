@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>「慈心❸⓿週年」系列活動開始報名囉❗</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Noto Sans TC & Zen Maru Gothic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        earth: {
+                            50: '#fdfbf7',
+                            100: '#f7f4ea',
+                            200: '#e8e1d0',
+                            300: '#d7c8b0',
+                            600: '#8c765c',
+                            800: '#4d3e2f',
+                            900: '#2c2219',
+                        },
+                        forest: {
+                            50: '#f2f9f4',
+                            100: '#e1f2e5',
+                            500: '#40916c',
+                            600: '#2d6a4f',
+                            700: '#1b4332',
+                            800: '#081c15',
+                        },
+                        amberTea: {
+                            100: '#fef3c7',
+                            500: '#d97706',
+                            600: '#b45309',
+                            700: '#92400e',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans TC"', 'sans-serif'],
+                        title: ['"Zen Maru Gothic"', '"Noto Sans TC"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f7f4ea;
+            background-image: radial-gradient(#e8e1d0 1px, transparent 1px);
+            background-size: 24px 24px;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+
+        /* Custom Card Selection Styling */
+        .event-card {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .event-card.selected {
+            border-color: #2d6a4f;
+            background-color: #f2f9f4;
+            box-shadow: 0 10px 25px -5px rgba(45, 106, 79, 0.15);
+            transform: translateY(-2px);
+        }
+        .checkbox-custom {
+            transition: all 0.2s ease;
+        }
+        .event-card.selected .checkbox-custom {
+            background-color: #2d6a4f;
+            border-color: #2d6a4f;
+        }
+        .event-card.selected .checkbox-custom i {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        /* Leaf float animation */
+        @keyframes floatLeaf {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(5deg); }
+        }
+        .floating-leaf {
+            animation: floatLeaf 4s ease-in-out infinite;
+        }
+        
+        /* Modal Backdrop Fade */
+        .modal-fade {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        /* Custom Scrollbar for Admin Table & Code box */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f7f4ea;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d7c8b0;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8c765c;
+        }
+    </style>
+</head>
+<body class="text-earth-900 min-h-screen flex flex-col justify-between selection:bg-forest-500 selection:text-white">
+
+    <!-- Toast Notification Container -->
+    <div id="toast" class="fixed top-5 right-5 z-50 transform translate-y-[-100px] opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-3 bg-earth-900 text-white px-5 py-3.5 rounded-2xl shadow-xl border border-earth-800">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+        <span id="toast-msg" class="text-sm font-medium">提示訊息</span>
+    </div>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-3xl mx-auto px-4 py-6 sm:py-10">
+        
+        <!-- Header Banner Section -->
+        <header class="relative bg-gradient-to-br from-forest-700 via-forest-600 to-forest-800 text-white rounded-3xl p-6 sm:p-10 shadow-xl overflow-hidden mb-8 border border-forest-500/30">
+            <!-- Decorative SVG Foliage Background Elements -->
+            <div class="absolute -right-10 -bottom-10 opacity-15 pointer-events-none">
+                <svg width="240" height="240" viewBox="0 0 100 100" fill="currentColor">
+                    <path d="M50 0 C60 30, 90 40, 100 50 C70 60, 60 90, 50 100 C40 70, 10 60, 0 50 C30 40, 40 10, 50 0 Z"/>
+                </svg>
+            </div>
+            <div class="absolute right-8 top-6 opacity-25 text-amber-200 floating-leaf">
+                <i class="fa-solid fa-leaf text-5xl"></i>
+            </div>
+            
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md text-amber-200 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider mb-4 border border-white/20">
+                <i class="fa-solid fa-seedling text-amber-300"></i>
+                慈心有機農業發展基金會
+            </div>
+
+            <h1 class="text-2xl sm:text-4xl font-bold tracking-wide text-white font-title leading-snug text-center">
+                「慈心❸⓿週年」系列活動開始<br>開放報名囉❗
+            </h1>
+
+            <div class="mt-6 flex flex-wrap items-center gap-4 text-xs font-medium text-forest-100/90 border-t border-forest-500/40 pt-4">
+                <div class="space-y-1.5">
+                    <span class="flex flex-wrap items-center gap-2">
+                        <span class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-location-dot text-amber-300"></i>
+                            <span>主場：台中學苑、區域教室連線學習</span>
+                        </span>
+                        <button type="button" id="open-classroom-btn"
+                            class="inline-flex items-center gap-1 bg-white/15 hover:bg-white/25 text-amber-200 hover:text-white px-2.5 py-1 rounded-full text-[11px] font-bold border border-white/25 transition-all cursor-pointer">
+                            <i class="fa-solid fa-tv text-[10px]"></i>
+                            <span>連線教室</span>
+                        </button>
+                    </span>
+                    <p class="flex items-center gap-1.5 text-amber-200">
+                        <i class="fa-solid fa-circle-info text-amber-300"></i>
+                        <span>備註：僅開放 廣論學員 報名</span>
+                    </p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Registration Form Card -->
+        <div id="form-card" class="bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-earth-200/70 relative">
+            
+            <form id="registration-form" class="space-y-8" novalidate>
+
+                <!-- Section: 理念課程表 -->
+                <div>
+                    <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-earth-200 mb-4">
+                        <div class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-table-list text-forest-600 text-lg"></i>
+                            <h2 class="text-lg font-bold text-earth-800 font-title">理念課程表 ( 週一晚上 7~9 點 )</h2>
+                        </div>
+                        <span class="text-xs font-medium text-forest-700 bg-forest-100 px-2.5 py-1 rounded-full">
+                            共十堂課
+                        </span>
+                    </div>
+
+                    <div class="overflow-x-auto rounded-2xl border border-earth-200 shadow-sm bg-white">
+                        <table class="w-full text-center border-collapse text-xs sm:text-sm">
+                            <thead>
+                                <tr class="bg-earth-100 text-earth-800 font-bold border-b border-earth-200">
+                                    <th class="py-3 px-3 sm:px-4 border-r border-earth-200 whitespace-nowrap tracking-widest">堂 數</th>
+                                    <th class="py-3 px-3 sm:px-4 border-r border-earth-200 whitespace-nowrap tracking-widest">上課日期</th>
+                                    <th class="py-3 px-3 sm:px-4 tracking-widest">主 題</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-earth-200 text-earth-900">
+                                <tr class="hover:bg-earth-50/80 transition-colors">
+                                    <td class="py-2.5 px-3 sm:px-4 border-r border-earth-200 font-medium whitespace-nowrap">第一堂</td>
+                                    <td class="py-2.5 px-3 sm:px-4 border-r border-earth-200 whitespace-nowrap">1/04 (一)</td>
+                                    <td class="py-2.5 px-3 sm:px-4 font-medium">上師2016-慈心20週年 開示學習</td>
+                                </tr>
+                                <tr class="hover:bg-earth-50/80 transition-colors">
+                                    <td class="py-2.5 px-3 sm:px-4 border-r border-earth-200 font-medium whitespace-nowrap">第二堂</td>
+                                    <td class="py-2.5 px-3 sm:px-4 border-r border-earth-200 whitespace-nowrap">1/18 (一)</td>
+                                    <td class="py-2.5 px-3 sm:px-4 font-medium">AI開發體驗活動-初階</td>
+                                </tr>
+                                <tr class="hover:bg-earth-50/80 transition-colors">
+                                    <td class="py-2.5 px-3 sm:px-4 border-r border-earth-200 font-medium whitespace-nowrap">第三堂</td>
+                                    <td class="py-2.5 px-3 sm:px-4 border-r border-earth-200 whitespace-nowrap">2/15 (一)</td>
+                                    <td class="py-2.5 px-3 sm:px-4 font-medium">綠色保育</td>
+                                </tr>
+                                <tr class="hover:bg-earth-50/80 transition-colors">
+                                    <td class="py-2.5 px-3 sm:px-4 border-r border-earth-200 font-medium whitespace-nowrap">第四堂</td>
+                                    <td class="py-2.5 px-3 sm:px-4 border-r border-earth-200 whitespace-nowrap">3/08 or 15 (一)</td>
+                                    <td class="py-2.5 px-3 sm:px-4 font-medium">慈心未亮之地-高美計畫</td>
+                                </tr>
+                                <tr class="hover:bg-earth-50/80 transition-colors">
+                                    <td class="py-2.5 px-3 sm:px-4 border-r border-earth-200 font-medium whitespace-nowrap">第五堂</td>
+                                    <td class="py-2.5 px-3 sm:px-4 border-r border-earth-200 whitespace-nowrap">3/22 or 29 (一)</td>
+                                    <td class="py-2.5 px-3 sm:px-4 font-medium">淨塑理念-解開塑縛</td>
+                                </tr>
+                                <tr class="hover:bg-earth-50/80 transition-colors">
+                                    <td class="py-2.5 px-3 sm:px-4 border-r border-earth-200 font-medium whitespace-nowrap">第六堂</td>
+                                    <td class="py-2.5 px-3 sm:px-4 border-r border-earth-200 whitespace-nowrap">4/12 (一)</td>
+                                    <td class="py-2.5 px-3 sm:px-4 font-medium">AI開發體驗活動-進階</td>
+                                </tr>
+                                <tr class="hover:bg-earth-50/80 transition-colors">
+                                    <td class="py-2.5 px-3 sm:px-4 border-r border-earth-200 font-medium whitespace-nowrap">第七堂</td>
+                                    <td class="py-2.5 px-3 sm:px-4 border-r border-earth-200 whitespace-nowrap">4/26 (一)</td>
+                                    <td class="py-2.5 px-3 sm:px-4 font-medium">原生植物</td>
+                                </tr>
+                                <tr class="hover:bg-earth-50/80 transition-colors">
+                                    <td class="py-2.5 px-3 sm:px-4 border-r border-earth-200 font-medium whitespace-nowrap">第八堂</td>
+                                    <td class="py-2.5 px-3 sm:px-4 border-r border-earth-200 whitespace-nowrap">5/10 (一)</td>
+                                    <td class="py-2.5 px-3 sm:px-4 font-medium">上師2016-慈心20週年 開示學習</td>
+                                </tr>
+                                <tr class="hover:bg-earth-50/80 transition-colors">
+                                    <td class="py-2.5 px-3 sm:px-4 border-r border-earth-200 font-medium whitespace-nowrap">第九堂</td>
+                                    <td class="py-2.5 px-3 sm:px-4 border-r border-earth-200 whitespace-nowrap">5/24 (一)</td>
+                                    <td class="py-2.5 px-3 sm:px-4 font-medium">上師2016-慈心20週年 開示學習</td>
+                                </tr>
+                                <tr class="bg-emerald-200/80 text-earth-900 font-bold">
+                                    <td class="py-3 px-3 sm:px-4 border-r border-emerald-300/80 whitespace-nowrap">第十堂</td>
+                                    <td class="py-3 px-3 sm:px-4 border-r border-emerald-300/80 whitespace-nowrap">6/06 (日) 整天</td>
+                                    <td class="py-3 px-3 sm:px-4">
+                                        <span class="inline-flex flex-wrap items-center justify-center gap-2">
+                                            <span>結業典禮</span>
+                                            <span class="inline-flex items-center gap-1 bg-amber-300 text-earth-900 px-2.5 py-1 rounded-xl text-xs sm:text-sm font-bold shadow-xs">
+                                                <i class="fa-solid fa-location-dot text-rose-600"></i>
+                                                <span>關西慈心農場</span>
+                                            </span>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Section: 戶外活動 -->
+                <div>
+                    <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-earth-200 mb-4">
+                        <div class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-tree text-forest-600 text-lg"></i>
+                            <h2 class="text-lg font-bold text-earth-800 font-title">戶外活動 (開放報名 ing )</h2>
+                        </div>
+                        <span class="inline-flex items-center gap-1.5 text-xs font-bold text-amberTea-700 bg-amberTea-100 px-2.5 py-1 rounded-full">
+                            <span class="w-2 h-2 rounded-full bg-amberTea-500 animate-pulse"></span>
+                            開放報名 ing
+                        </span>
+                    </div>
+
+                    <div class="bg-amberTea-100/40 border border-amberTea-500/25 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="w-full space-y-1 text-center sm:text-left">
+                            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-bold bg-amberTea-100 text-amberTea-700">
+                                    <i class="fa-solid fa-mug-hot"></i> 手作體驗
+                                </span>
+                                <span class="text-xs font-semibold text-earth-600">2027/1/16(六)</span>
+                            </div>
+                            <h3 class="text-base font-bold text-earth-900 font-title leading-snug">
+                                1/16 (六) 掏心柑，封茶香<br>
+                                <span class="text-sm sm:text-base font-semibold text-earth-800">客家酸柑茶手作體驗與蔬食饗宴</span>
+                            </h3>
+                            <p class="text-xs sm:text-sm font-semibold text-amberTea-700 flex items-center justify-center sm:justify-start gap-1.5">
+                                <i class="fa-solid fa-location-dot text-amberTea-600"></i>
+                                <span>1/16 養茶三味 - 客家酸柑茶達人</span>
+                            </p>
+                            <p class="text-xs text-earth-700 flex items-center justify-center sm:justify-start gap-1.5 sm:pl-4">
+                                <span>苗栗縣頭屋鄉象山村象山路20-5號</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="mt-3 text-xs sm:text-sm text-earth-600 flex items-start gap-1.5">
+                        <i class="fa-solid fa-circle-info text-forest-600 mt-0.5 shrink-0"></i>
+                        <span>備註：理念課程同時搭配各式實踐、體驗課程，尚在規劃中</span>
+                    </p>
+                </div>
+
+                <!-- Section: 個人與班別資訊 (無數字編號) -->
+                <div>
+                    <div class="flex items-center gap-2.5 pb-3 border-b border-earth-200 mb-6">
+                        <i class="fa-solid fa-id-card text-forest-600 text-lg"></i>
+                        <h2 class="text-lg font-bold text-earth-800 font-title">基本資料與研討班別</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- 區域 -->
+                        <div class="space-y-1.5 md:col-span-2">
+                            <label for="region" class="block text-sm font-bold text-earth-800">
+                                區域 <span class="text-rose-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <select id="region" name="region" required
+                                    class="w-full bg-earth-50 border border-earth-300 text-earth-900 text-sm rounded-xl px-4 py-3 appearance-none focus:outline-none focus:ring-2 focus:ring-forest-500 focus:bg-white transition-all">
+                                    <option value="" disabled selected>請選擇所屬區域</option>
+                                    <option value="中苑本部">中苑本部</option>
+                                    <option value="忠明">忠明</option>
+                                    <option value="昌平">昌平</option>
+                                    <option value="大里">大里</option>
+                                    <option value="豐原">豐原</option>
+                                    <option value="南投">南投</option>
+                                    <option value="清水支苑">清水支苑</option>
+                                    <option value="彰化支苑">彰化支苑</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-earth-600">
+                                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
+                            <p id="region-error" class="text-xs text-rose-500 hidden flex items-center gap-1 mt-1">
+                                <i class="fa-solid fa-circle-exclamation"></i> 請選擇您的所屬區域
+                            </p>
+                        </div>
+
+                        <!-- 上課地點 (條件式顯示) -->
+                        <div id="location-container" class="space-y-1.5 md:col-span-2 hidden">
+                            <label for="location" class="block text-sm font-bold text-earth-800">
+                                上課地點 <span class="text-rose-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <select id="location" name="location"
+                                    class="w-full bg-earth-50 border border-earth-300 text-earth-900 text-sm rounded-xl px-4 py-3 appearance-none focus:outline-none focus:ring-2 focus:ring-forest-500 focus:bg-white transition-all">
+                                    <option value="" disabled selected>請先選擇區域</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-earth-600">
+                                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
+                            <p id="location-error" class="text-xs text-rose-500 hidden flex items-center gap-1 mt-1">
+                                <i class="fa-solid fa-circle-exclamation"></i> 請選擇您的上課地點
+                            </p>
+                        </div>
+
+                        <!-- 研討班別 -->
+                        <div class="space-y-2 md:col-span-2 bg-rose-50/70 border border-rose-200 rounded-2xl p-4 sm:p-5">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="inline-flex items-center gap-1.5 bg-rose-100 text-rose-800 border border-rose-200 px-3 py-1 rounded-xl text-sm font-bold">
+                                    研討班別 <span class="text-rose-600">*</span>
+                                </span>
+                                <!-- Class Preview Badge -->
+                                <div id="class-preview" class="inline-flex items-center gap-1.5 bg-forest-100 text-forest-700 px-3 py-1 rounded-full text-xs font-bold border border-forest-500/20 shadow-sm transition-all">
+                                    <i class="fa-solid fa-graduation-cap"></i>
+                                    <span>班別預覽：未完成選擇</span>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                                <!-- 年度 -->
+                                <div>
+                                    <label for="class-year" class="block text-xs font-medium text-earth-600 mb-1">年度</label>
+                                    <div class="relative">
+                                        <select id="class-year" name="classYear" required
+                                            class="w-full bg-earth-50 border border-earth-300 text-earth-900 text-sm rounded-xl px-4 py-3 appearance-none focus:outline-none focus:ring-2 focus:ring-forest-500 focus:bg-white transition-all">
+                                            <option value="" disabled selected>請選擇年度</option>
+                                            <option value="15">15</option>
+                                            <option value="16">16</option>
+                                            <option value="17">17</option>
+                                            <option value="18">18</option>
+                                            <option value="19">19</option>
+                                            <option value="20">20</option>
+                                            <option value="21">21</option>
+                                            <option value="22">22</option>
+                                            <option value="23">23</option>
+                                            <option value="24">24</option>
+                                            <option value="25">25</option>
+                                            <option value="26">26</option>
+                                        </select>
+                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-earth-600">
+                                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 系列 -->
+                                <div>
+                                    <label for="class-series" class="block text-xs font-medium text-earth-600 mb-1">系列</label>
+                                    <div class="relative">
+                                        <select id="class-series" name="classSeries" required
+                                            class="w-full bg-earth-50 border border-earth-300 text-earth-900 text-sm rounded-xl px-4 py-3 appearance-none focus:outline-none focus:ring-2 focus:ring-forest-500 focus:bg-white transition-all">
+                                            <option value="" disabled selected>請選擇系列</option>
+                                            <option value="春">春</option>
+                                            <option value="秋">秋</option>
+                                            <option value="增">增</option>
+                                            <option value="善">善</option>
+                                            <option value="備">備</option>
+                                            <option value="宗">宗</option>
+                                        </select>
+                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-earth-600">
+                                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 班級 -->
+                                <div>
+                                    <label for="class-num" class="block text-xs font-medium text-earth-600 mb-1">班級 (3位數)</label>
+                                    <input type="text" id="class-num" name="classNum" placeholder="例如：002" maxlength="3" required
+                                        class="w-full bg-earth-50 border border-earth-300 text-earth-900 text-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:bg-white transition-all">
+                                </div>
+                            </div>
+                            <p id="class-error" class="text-xs text-rose-500 hidden flex items-center gap-1 mt-1">
+                                <i class="fa-solid fa-circle-exclamation"></i> 請完整填寫年度、系列與 3 位數班級編號
+                            </p>
+                        </div>
+
+                        <!-- 聯繫電話 -->
+                        <div class="space-y-1.5">
+                            <label for="phone" class="block text-sm font-bold text-earth-800">
+                                聯繫電話 <span class="text-rose-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <input type="tel" id="phone" name="phone" placeholder="09XX-XXXXXX" required
+                                    class="w-full bg-earth-50 border border-earth-300 text-earth-900 text-sm rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:bg-white transition-all">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-earth-600">
+                                    <i class="fa-solid fa-mobile-screen-button"></i>
+                                </div>
+                            </div>
+                            <p id="phone-error" class="text-xs text-rose-500 hidden flex items-center gap-1 mt-1">
+                                <i class="fa-solid fa-circle-exclamation"></i> 請輸入正確的手機號碼格式 (如 0912-345678)
+                            </p>
+                        </div>
+
+                        <!-- LINE ID -->
+                        <div class="space-y-1.5">
+                            <label for="line-id" class="block text-sm font-bold text-earth-800">
+                                LINE ID <span class="text-rose-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <input type="text" id="line-id" name="lineId" placeholder="請輸入您的 LINE ID，方便活動聯繫" required
+                                    class="w-full bg-earth-50 border border-earth-300 text-earth-900 text-sm rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:bg-white transition-all">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-emerald-600">
+                                    <i class="fa-brands fa-line text-lg"></i>
+                                </div>
+                            </div>
+                            <p id="line-error" class="text-xs text-rose-500 hidden flex items-center gap-1 mt-1">
+                                <i class="fa-solid fa-circle-exclamation"></i> 請填寫 LINE ID 方便工作人員建立群組或聯繫
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section: 報名項目選單 (無數字編號) -->
+                <div>
+                    <div class="flex items-center gap-2.5 pb-3 border-b border-earth-200 mb-4">
+                        <i class="fa-solid fa-calendar-check text-forest-600 text-lg"></i>
+                        <h2 class="text-lg font-bold text-earth-800 font-title">
+                            我要報名 <span class="text-rose-500 text-sm font-normal">（可複選，至少勾選一項 *）</span>
+                        </h2>
+                    </div>
+
+                    <p id="events-error" class="text-xs text-rose-500 hidden flex items-center gap-1 mb-3">
+                        <i class="fa-solid fa-circle-exclamation"></i> 請至少勾選一項欲報名的活動
+                    </p>
+
+                    <div class="grid grid-cols-1 gap-4">
+                        
+                        <!-- Event 1 Card -->
+                        <label class="event-card relative bg-earth-50/50 border-2 border-earth-200 rounded-2xl p-4 sm:p-5 cursor-pointer hover:border-forest-500/50 flex items-start gap-4">
+                            <input type="checkbox" name="events" value="1/4(一)起~慈心理念班" class="sr-only event-checkbox">
+                            <div class="checkbox-custom w-6 h-6 rounded-lg border-2 border-earth-300 bg-white flex items-center justify-center text-white shrink-0 mt-0.5">
+                                <i class="fa-solid fa-check text-xs transition-transform transform scale-0"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex flex-wrap items-center justify-between gap-2">
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-bold bg-forest-100 text-forest-700">
+                                        <i class="fa-solid fa-book-open"></i> 理念研習
+                                    </span>
+                                    <span class="text-xs font-semibold text-earth-600 bg-earth-200/60 px-2 py-0.5 rounded-full">
+                                        定期課表
+                                    </span>
+                                </div>
+                                <h3 class="text-base sm:text-lg font-bold text-earth-900 mt-2 font-title">
+                                    1/4(一)起 ~ 慈心理念班
+                                </h3>
+                                <p class="text-xs sm:text-sm text-earth-600 mt-1 leading-relaxed">
+                                    深入了解慈心有機、護生與環境永續的核心理念，共同探索關懷大地與生命健康的學習之旅。
+                                </p>
+                            </div>
+                        </label>
+
+                        <!-- Event 2 Card -->
+                        <label class="event-card relative bg-earth-50/50 border-2 border-earth-200 rounded-2xl p-4 sm:p-5 cursor-pointer hover:border-forest-500/50 flex items-start gap-4">
+                            <input type="checkbox" name="events" value="1/16 (六) 掏心柑，封茶香 客家酸柑茶手作體驗與蔬食饗宴" class="sr-only event-checkbox">
+                            <div class="checkbox-custom w-6 h-6 rounded-lg border-2 border-earth-300 bg-white flex items-center justify-center text-white shrink-0 mt-0.5">
+                                <i class="fa-solid fa-check text-xs transition-transform transform scale-0"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex flex-wrap items-center justify-between gap-2">
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-bold bg-amberTea-100 text-amberTea-700">
+                                        <i class="fa-solid fa-mug-hot"></i> 手作體驗
+                                    </span>
+                                    <span class="text-xs font-semibold text-amberTea-700 bg-amberTea-100/70 px-2 py-0.5 rounded-full">
+                                        限量體驗
+                                    </span>
+                                </div>
+                                <h3 class="text-base sm:text-lg font-bold text-earth-900 mt-2 font-title leading-snug">
+                                    1/16 (六) 掏心柑，封茶香<br>
+                                    <span class="text-sm sm:text-base font-semibold text-earth-800">客家酸柑茶手作體驗與蔬食饗宴</span>
+                                </h3>
+                                <p class="text-xs sm:text-sm font-semibold text-amberTea-700 mt-1 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-location-dot text-amberTea-600"></i>
+                                    <span>養茶三味 - 客家酸柑茶達人</span>
+                                </p>
+                                <p class="text-xs text-earth-700 mt-0.5 flex items-center gap-1.5 pl-4">
+                                    <span>苗栗縣頭屋鄉象山村象山路20-5號</span>
+                                </p>
+                                <p class="text-xs sm:text-sm text-earth-600 mt-1 leading-relaxed">
+                                    體驗九蒸九晒的客家傳統智慧！親手製作酸甜回甘的柑橘養生茶餅，共享溫暖茶香歲月。
+                                </p>
+                            </div>
+                        </label>
+
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-4">
+                    <button type="submit" id="submit-btn"
+                        class="w-full bg-gradient-to-r from-forest-600 via-forest-500 to-forest-700 text-white font-bold py-4 px-6 rounded-2xl shadow-lg hover:shadow-xl hover:from-forest-700 hover:to-forest-800 transition-all duration-300 flex items-center justify-center gap-2 text-base sm:text-lg">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>確認送出報名</span>
+                    </button>
+                    <p class="text-center text-xs text-earth-600 mt-3 flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-shield-halved text-forest-500"></i> 您填寫的資料僅用於「慈心30週年」系列活動聯繫與通知
+                    </p>
+                </div>
+
+                <!-- Section: 活動預告 -->
+                <div class="pt-5 border-t border-earth-200">
+                    <div class="bg-rose-50 border border-rose-200 rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div class="space-y-2">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs sm:text-sm font-bold bg-rose-100 text-rose-800 border border-rose-200">
+                                    <i class="fa-solid fa-bullhorn text-rose-600"></i>
+                                    <span>活動預告：</span>
+                                    <span class="text-base sm:text-lg font-extrabold tracking-wide text-rose-900">2027/03/14 (日)</span>
+                                    <span>市集活動</span>
+                                </span>
+                            </div>
+                            <h3 class="text-base sm:text-lg font-extrabold text-forest-800 font-title leading-snug">
+                                田裡有腳印市集｜蔬食Ｘ給土地的美好回禮
+                            </h3>
+                            <p class="text-xs sm:text-sm text-earth-800 flex items-center gap-1.5 font-bold bg-rose-100/80 inline-flex px-3 py-1 rounded-lg border border-rose-200">
+                                <i class="fa-solid fa-location-dot text-rose-600"></i>
+                                <span>捷運X台鐵 松竹站</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+        <!-- Receipt / Success State (Hidden by default) -->
+        <div id="receipt-card" class="bg-white rounded-3xl p-6 sm:p-10 shadow-2xl border border-forest-500/20 hidden relative overflow-hidden">
+            <div class="absolute top-0 right-0 left-0 h-3 bg-gradient-to-r from-forest-500 via-amberTea-500 to-forest-700"></div>
+            
+            <div class="text-center space-y-3 mb-8 pt-2">
+                <div class="w-16 h-16 bg-forest-100 text-forest-600 rounded-full flex items-center justify-center mx-auto text-3xl shadow-inner">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-earth-900 font-title">報名成功！電子回條</h2>
+                <p class="text-sm text-earth-600">感謝您的熱情參與，我們已收到您的報名資料。</p>
+            </div>
+
+            <!-- Receipt Content Ticket Style -->
+            <div class="bg-earth-50 rounded-2xl p-5 sm:p-6 border border-earth-200 space-y-4 mb-8 relative">
+                <div class="flex justify-between items-center pb-3 border-b border-earth-200">
+                    <span class="text-xs text-earth-600 font-medium">報名編號</span>
+                    <span id="receipt-id" class="text-xs font-mono font-bold text-forest-700">#CX30-0000</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                    <div>
+                        <span class="text-xs text-earth-600 block">所屬區域</span>
+                        <span id="receipt-region" class="font-bold text-earth-800">--</span>
+                    </div>
+                    <div id="receipt-location-wrapper">
+                        <span class="text-xs text-earth-600 block">上課地點</span>
+                        <span id="receipt-location" class="font-bold text-earth-800">--</span>
+                    </div>
+                    <div>
+                        <span class="text-xs text-earth-600 block">研討班別</span>
+                        <span id="receipt-class" class="font-bold text-forest-700">--</span>
+                    </div>
+                    <div>
+                        <span class="text-xs text-earth-600 block">聯繫電話</span>
+                        <span id="receipt-phone" class="font-bold text-earth-800">--</span>
+                    </div>
+                    <div>
+                        <span class="text-xs text-earth-600 block">LINE ID</span>
+                        <span id="receipt-line" class="font-bold text-earth-800">--</span>
+                    </div>
+                </div>
+
+                <div class="pt-3 border-t border-earth-200">
+                    <span class="text-xs text-earth-600 block mb-1">已報名活動項目</span>
+                    <ul id="receipt-events" class="space-y-1.5">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+
+                <div class="pt-3 border-t border-earth-200 flex justify-between items-center text-xs text-earth-600">
+                    <span>報名時間</span>
+                    <span id="receipt-time">--</span>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-3">
+                <button id="copy-btn" class="flex-1 bg-amberTea-500 hover:bg-amberTea-600 text-white font-bold py-3.5 px-4 rounded-xl shadow transition-all flex items-center justify-center gap-2 text-sm">
+                    <i class="fa-regular fa-copy"></i>
+                    <span>複製報名資訊</span>
+                </button>
+                <button id="reset-btn" class="flex-1 bg-forest-600 hover:bg-forest-700 text-white font-bold py-3.5 px-4 rounded-xl shadow transition-all flex items-center justify-center gap-2 text-sm">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <span>再填一筆報名</span>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer & Admin Tool Trigger -->
+    <footer class="w-full bg-earth-100 border-t border-earth-200 py-6 px-4 mt-12 text-center text-xs text-earth-600">
+        <div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div>
+                © 慈心有機農業發展基金會 30週年慶祝系列活動
+            </div>
+            <button id="open-admin-btn" class="inline-flex items-center gap-1.5 text-earth-600 hover:text-forest-700 bg-earth-200/70 hover:bg-earth-200 px-3 py-1.5 rounded-lg transition-all font-medium">
+                <i class="fa-solid fa-gear text-xs"></i>
+                <span>⚙️ 雲端試算表串接與名單管理</span>
+            </button>
+        </div>
+    </footer>
+
+    <!-- Classroom Connection Modal -->
+    <div id="classroom-modal" class="fixed inset-0 bg-earth-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 modal-fade opacity-0 pointer-events-none">
+        <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl border border-earth-200 overflow-hidden">
+            <div class="bg-forest-700 text-white p-5 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <i class="fa-solid fa-tv text-amber-300 text-lg"></i>
+                    <h3 class="font-bold text-base sm:text-lg font-title">連線教室</h3>
+                </div>
+                <button type="button" id="close-classroom-btn" class="text-forest-100 hover:text-white p-1.5 rounded-lg transition-all cursor-pointer">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6 sm:p-8 text-center space-y-4">
+                <div class="w-12 h-12 rounded-2xl bg-forest-100 text-forest-700 flex items-center justify-center mx-auto text-xl">
+                    <i class="fa-solid fa-hourglass-half"></i>
+                </div>
+                <p class="text-base font-bold text-earth-800">待確認中</p>
+                <p class="text-xs text-earth-600">各區域連線教室資訊確認後將同步更新，敬請留意公告。</p>
+                <div class="pt-2">
+                    <button type="button" id="confirm-classroom-btn" class="w-full bg-forest-600 hover:bg-forest-700 text-white font-bold py-2.5 px-4 rounded-xl text-sm transition-all cursor-pointer">
+                        我知道了
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Drawer / Modal -->
+    <div id="admin-modal" class="fixed inset-0 bg-earth-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 modal-fade opacity-0 pointer-events-none">
+        <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl border border-earth-200 overflow-hidden flex flex-col max-h-[90vh]">
+            
+            <!-- Modal Header -->
+            <div class="bg-earth-900 text-white p-5 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <i class="fa-solid fa-cloud-arrow-up text-emerald-400 text-xl"></i>
+                    <div>
+                        <h3 class="font-bold text-lg font-title">Google 雲端試算表自動同步設定</h3>
+                        <p class="text-xs text-earth-300 font-mono">ID: 1i70R06W6_c83wjZWbTSvYEImuS1_5-5SfJ-or4HkARA</p>
+                    </div>
+                </div>
+                <button id="close-admin-btn" class="text-earth-300 hover:text-white p-1.5 rounded-lg transition-all">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <div class="p-5 overflow-y-auto space-y-6 flex-1 text-xs">
+                
+                <!-- Target Sheet Information Banner -->
+                <div class="bg-forest-50 border border-forest-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <span class="bg-forest-600 text-white text-[11px] font-bold px-2 py-0.5 rounded-md">專屬目標試算表已綁定</span>
+                            <span class="text-forest-800 font-bold">慈心30週年報名結果檔</span>
+                        </div>
+                        <p class="text-earth-600 font-mono text-[11px]">
+                            https://docs.google.com/spreadsheets/d/1i70R06W6_c83wjZWbTSvYEImuS1_5-5SfJ-or4HkARA/edit
+                        </p>
+                    </div>
+                    <a href="https://docs.google.com/spreadsheets/d/1i70R06W6_c83wjZWbTSvYEImuS1_5-5SfJ-or4HkARA/edit" target="_blank"
+                       class="shrink-0 inline-flex items-center gap-1.5 bg-forest-600 hover:bg-forest-700 text-white font-bold px-3.5 py-2 rounded-xl transition-all shadow-sm">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        <span>開啟此雲端試算表</span>
+                    </a>
+                </div>
+
+                <!-- Setup Guide & Code Snippet Container -->
+                <div class="bg-earth-50 rounded-2xl p-4 border border-earth-200 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold text-earth-800 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-code text-forest-600"></i>
+                            一鍵部署 Google Apps Script 腳本 (`Code.gs`)
+                        </h4>
+                        <button id="copy-gas-code-btn" class="bg-amberTea-500 hover:bg-amberTea-600 text-white font-bold px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 text-[11px]">
+                            <i class="fa-regular fa-copy"></i>
+                            <span>複製腳本程式碼</span>
+                        </button>
+                    </div>
+                    
+                    <ol class="list-decimal list-inside space-y-1 text-earth-700 leading-relaxed">
+                        <li>點擊「開啟此雲端試算表」→ 上方選單點選 <b>擴充功能</b> → <b>Apps Script</b>。</li>
+                        <li>清空預設程式碼，貼上右下方方框程式碼，點擊上方的 <b>儲存 (💾)</b>。</li>
+                        <li>點擊右上角 <b>部署</b> → <b>新增部署</b> → 選擇類型 <b>網頁應用程式</b>。</li>
+                        <li>「誰有存取權」請改為 <b>「所有人 (Anyone)」</b>，最後點擊 <b>部署</b> 並給予授權。</li>
+                        <li>複製獲得的 <b>網頁應用程式網址 (Web App URL)</b>，將其貼入下方欄位並點擊儲存！</li>
+                    </ol>
+
+                    <div class="relative mt-2">
+                        <pre id="gas-code" class="bg-earth-900 text-emerald-300 p-3.5 rounded-xl text-[11px] font-mono leading-relaxed overflow-x-auto max-h-40 border border-earth-800 select-all">// Google Apps Script Code for Sheet ID: 1i70R06W6_c83wjZWbTSvYEImuS1_5-5SfJ-or4HkARA
+const SPREADSHEET_ID = '1i70R06W6_c83wjZWbTSvYEImuS1_5-5SfJ-or4HkARA';
+
+function doPost(e) {
+  try {
+    const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+    let sheet = ss.getSheetByName('報名名單');
+    if (!sheet) {
+      sheet = ss.getSheets()[0];
+    }
+    
+    // Ensure Header Row Exists
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow([
+        '報名時間', '區域', '上課地點', '年度', '系列', '班級', 
+        '完整班別', '聯繫電話', 'LINE ID', '報名項目彙整', 
+        '1/4(一)起~慈心理念班', '1/16 (六) 掏心柑，封茶香 客家酸柑茶手作體驗與蔬食饗宴'
+      ]);
+      sheet.getRange(1, 1, 1, 12).setFontWeight('bold').setBackground('#e1f2e5');
+    }
+    
+    const postData = JSON.parse(e.postData.contents);
+    const eventsArr = postData.events || [];
+    
+    const hasEvent1 = eventsArr.includes('1/4(一)起~慈心理念班') ? 'V' : '';
+    const hasEvent2 = eventsArr.includes('1/16 (六) 掏心柑，封茶香 客家酸柑茶手作體驗與蔬食饗宴') ? 'V' : '';
+    
+    // Force text formatting with single quotes to prevent leading zeros from disappearing
+    const classNumText = "'" + (postData.classNum || postData.classCode.slice(-3));
+    const phoneText = "'" + postData.phone;
+    
+    sheet.appendRow([
+      postData.time,
+      postData.region,
+      postData.location || '中苑本部',
+      postData.classYear || '',
+      postData.classSeries || '',
+      classNumText,
+      postData.classCode,
+      phoneText,
+      postData.lineId,
+      eventsArr.join('; '),
+      hasEvent1,
+      hasEvent2
+    ]);
+    
+    return ContentService.createTextOutput(JSON.stringify({ status: 'success', message: '已成功寫入試算表！' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doGet(e) {
+  return ContentService.createTextOutput('慈心30週年 Web App API 運作正常！');
+}</pre>
+                    </div>
+                </div>
+
+                <!-- Web App URL Setting Form -->
+                <div class="space-y-3 bg-white p-4 rounded-2xl border border-earth-200">
+                    <label for="script-url-input" class="block font-bold text-earth-800 text-xs">
+                        Google Apps Script Web App URL (網頁應用程式網址)
+                    </label>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <input type="url" id="script-url-input" 
+                            placeholder="https://script.google.com/macros/s/AKfycb.../exec"
+                            class="flex-1 bg-earth-50 border border-earth-300 text-earth-900 text-xs rounded-xl px-3.5 py-2.5 focus:ring-2 focus:ring-forest-500 font-mono">
+                        <button id="save-url-btn" class="bg-forest-600 hover:bg-forest-700 text-white font-bold px-4 py-2.5 rounded-xl transition-all shadow shrink-0 flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            <span>儲存網址設定</span>
+                        </button>
+                    </div>
+
+                    <!-- Smart Error Warning for User standard sheet URL mistake -->
+                    <div id="url-warning" class="hidden bg-rose-50 border border-rose-200 text-rose-700 p-3 rounded-xl text-xs space-y-1">
+                        <div class="font-bold flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-exclamation text-rose-500"></i>
+                            這不是發布後的 Web App 網址喔！
+                        </div>
+                        <p class="leading-relaxed">
+                            您輸入的是 Google 試算表本身的網址。目標試算表 ID（`1i70R06W6...`）已直接寫在上方腳本中。
+                            請在 Apps Script 中點擊右上角「<b>部署</b>」→「<b>新增部署</b>」，授權後複製結尾為 <b>`/exec`</b> 的網址貼在此處。
+                        </p>
+                    </div>
+
+                    <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-earth-200">
+                        <button id="test-script-btn" class="bg-amberTea-100 hover:bg-amberTea-200 text-amberTea-700 font-bold px-3.5 py-1.5 rounded-lg transition-all text-xs flex items-center gap-1.5">
+                            <i class="fa-solid fa-vial"></i>
+                            <span>測試連線寫入一筆測試資料</span>
+                        </button>
+
+                        <button id="download-configured-html-btn" class="bg-forest-100 hover:bg-forest-200 text-forest-700 font-bold px-3.5 py-1.5 rounded-lg transition-all text-xs flex items-center gap-1.5">
+                            <i class="fa-solid fa-file-arrow-down"></i>
+                            <span>下載已內建網址的正式版 index.html</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Modal Actions & Local Storage List Bar -->
+                <div class="bg-earth-50 rounded-2xl p-4 border border-earth-200 space-y-3">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div class="text-xs text-earth-700 font-medium">
+                            本機暫存備份筆數：<span id="data-count" class="font-bold text-forest-700 text-sm">0</span> 筆
+                        </div>
+                        <div class="flex gap-2">
+                            <button id="clear-data-btn" class="bg-rose-100 hover:bg-rose-200 text-rose-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1">
+                                <i class="fa-regular fa-trash-can"></i> 清空暫存
+                            </button>
+                            <button id="export-csv-btn" class="bg-forest-600 hover:bg-forest-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shadow">
+                                <i class="fa-solid fa-file-csv"></i> 匯出 CSV (UTF-8 BOM)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Table Body Container -->
+                    <div class="overflow-x-auto max-h-48 border border-earth-200 rounded-xl bg-white">
+                        <table class="w-full text-left text-xs text-earth-800 border-collapse">
+                            <thead class="sticky top-0 bg-earth-100 border-b border-earth-200">
+                                <tr>
+                                    <th class="p-2.5 font-bold">#</th>
+                                    <th class="p-2.5 font-bold">時間</th>
+                                    <th class="p-2.5 font-bold">區域</th>
+                                    <th class="p-2.5 font-bold">上課地點</th>
+                                    <th class="p-2.5 font-bold">研討班別</th>
+                                    <th class="p-2.5 font-bold">聯繫電話</th>
+                                    <th class="p-2.5 font-bold">LINE ID</th>
+                                    <th class="p-2.5 font-bold">報名活動</th>
+                                    <th class="p-2.5 font-bold text-center">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-table-body" class="divide-y divide-earth-200">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                        <div id="no-data-msg" class="text-center py-6 text-earth-600 text-xs hidden">
+                            尚無任何本機備份紀錄
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Target Spreadsheet ID
+            const TARGET_SPREADSHEET_ID = '1i70R06W6_c83wjZWbTSvYEImuS1_5-5SfJ-or4HkARA';
+
+            // Location Options Mapping
+            const locationMap = {
+                '忠明': ['忠明', '忠明中科', '忠明公益', '忠明烏日', '忠明逢甲', '忠明學府', '忠明興大'],
+                '昌平': ['昌平', '昌平大雅', '昌平佛化', '昌平崇德', '昌平新社', '昌平潭子', '昌平學士'],
+                '大里': ['大里', '大里大悲光', '大里太平', '大里益民', '大里仁德', '大里霧峰'],
+                '豐原': ['豐原', '豐原東勢'],
+                '南投': ['南投', '南投水里', '南投竹山', '南投埔里', '南投草屯'],
+                '清水支苑': ['清水', '清水三義', '清水大甲', '清水大肚', '清水大湖', '清水沙鹿', '清水苑裡', '清水苗栗'],
+                '彰化支苑': ['彰化二林', '彰化三民', '彰化北斗', '彰化民族', '彰化田中', '彰化伸港', '彰化和美', '彰化員林', '彰化鹿草', '彰化鹿港', '彰化溪湖', '彰化線西', '彰化龍泉寺']
+            };
+
+            // Form Elements
+            const form = document.getElementById('registration-form');
+            const regionSelect = document.getElementById('region');
+            const locationContainer = document.getElementById('location-container');
+            const locationSelect = document.getElementById('location');
+            const locationError = document.getElementById('location-error');
+
+            const yearSelect = document.getElementById('class-year');
+            const seriesSelect = document.getElementById('class-series');
+            const classNumInput = document.getElementById('class-num');
+            const classPreviewBadge = document.getElementById('class-preview');
+            const phoneInput = document.getElementById('phone');
+            const lineIdInput = document.getElementById('line-id');
+            const eventCheckboxes = document.querySelectorAll('.event-checkbox');
+            const eventCards = document.querySelectorAll('.event-card');
+            const submitBtn = document.getElementById('submit-btn');
+
+            // View Containers
+            const formCard = document.getElementById('form-card');
+            const receiptCard = document.getElementById('receipt-card');
+
+            // Error Elements
+            const regionError = document.getElementById('region-error');
+            const classError = document.getElementById('class-error');
+            const phoneError = document.getElementById('phone-error');
+            const lineError = document.getElementById('line-error');
+            const eventsError = document.getElementById('events-error');
+
+            // Handle Region Change -> Dynamic Location Options
+            regionSelect.addEventListener('change', () => {
+                regionError?.classList.add('hidden');
+                const selectedRegion = regionSelect.value;
+                
+                if (selectedRegion && selectedRegion !== '中苑本部' && locationMap[selectedRegion]) {
+                    // Populate options
+                    const options = locationMap[selectedRegion];
+                    locationSelect.innerHTML = '<option value="" disabled selected>請選擇上課地點</option>' +
+                        options.map(loc => `<option value="${loc}">${loc}</option>`).join('');
+                    
+                    locationSelect.required = true;
+                    locationContainer?.classList.remove('hidden');
+                } else {
+                    // Reset and hide
+                    locationSelect.innerHTML = '<option value="" disabled selected>請選擇上課地點</option>';
+                    locationSelect.required = false;
+                    locationSelect.value = '';
+                    locationContainer?.classList.add('hidden');
+                    locationError?.classList.add('hidden');
+                }
+            });
+
+            locationSelect.addEventListener('change', () => {
+                if (locationError) locationError.classList.add('hidden');
+            });
+
+            // Admin & Script Setting Elements
+            const openAdminBtn = document.getElementById('open-admin-btn');
+            const closeAdminBtn = document.getElementById('close-admin-btn');
+            const adminModal = document.getElementById('admin-modal');
+            const scriptUrlInput = document.getElementById('script-url-input');
+            const saveUrlBtn = document.getElementById('save-url-btn');
+            const urlWarning = document.getElementById('url-warning');
+            const testScriptBtn = document.getElementById('test-script-btn');
+            const copyGasCodeBtn = document.getElementById('copy-gas-code-btn');
+            const downloadConfiguredHtmlBtn = document.getElementById('download-configured-html-btn');
+            const dataCountSpan = document.getElementById('data-count');
+            const adminTableBody = document.getElementById('admin-table-body');
+            const noDataMsg = document.getElementById('no-data-msg');
+            const clearDataBtn = document.getElementById('clear-data-btn');
+            const exportCsvBtn = document.getElementById('export-csv-btn');
+
+            const WEB_APP_URL_KEY = 'cixin_30th_gas_webapp_url';
+            let savedWebAppUrl = localStorage.getItem(WEB_APP_URL_KEY) || '';
+            let lastSubmissionData = null;
+
+            if (scriptUrlInput && savedWebAppUrl) {
+                scriptUrlInput.value = savedWebAppUrl;
+            }
+
+            // Event Card Selection Toggle
+            eventCards.forEach((card) => {
+                const checkbox = card.querySelector('.event-checkbox');
+                card.addEventListener('click', () => {
+                    if (!checkbox) return;
+                    checkbox.checked = !checkbox.checked;
+                    card.classList.toggle('selected', checkbox.checked);
+                    eventsError?.classList.add('hidden');
+                });
+            });
+
+            // Class Code Live Preview Updater
+            function updateClassPreview() {
+                if (!classPreviewBadge) return;
+                const yearVal = yearSelect?.value || '';
+                const seriesVal = seriesSelect?.value || '';
+                const numVal = (classNumInput?.value || '').trim();
+                const spanEl = classPreviewBadge.querySelector('span');
+
+                if (yearVal && seriesVal && /^\d{3}$/.test(numVal)) {
+                    if (spanEl) spanEl.textContent = `班別預覽：${yearVal}${seriesVal}${numVal}班`;
+                } else if (yearVal || seriesVal || numVal) {
+                    if (spanEl) spanEl.textContent = `班別預覽：${yearVal || '__'}${seriesVal || '_'}${numVal || '___'}`;
+                } else {
+                    if (spanEl) spanEl.textContent = '班別預覽：未完成選擇';
+                }
+            }
+
+            yearSelect?.addEventListener('change', () => {
+                classError?.classList.add('hidden');
+                updateClassPreview();
+            });
+            seriesSelect?.addEventListener('change', () => {
+                classError?.classList.add('hidden');
+                updateClassPreview();
+            });
+            classNumInput?.addEventListener('input', (e) => {
+                e.target.value = e.target.value.replace(/\D/g, '').slice(0, 3);
+                classError?.classList.add('hidden');
+                updateClassPreview();
+            });
+            updateClassPreview();
+
+            // Copy GAS Script Code
+            copyGasCodeBtn?.addEventListener('click', () => {
+                const gasCodeEl = document.getElementById('gas-code');
+                if (gasCodeEl) {
+                    copyToClipboard(gasCodeEl.textContent, '已複製 Google Apps Script 程式碼！');
+                }
+            });
+
+            // Save Web App URL
+            saveUrlBtn?.addEventListener('click', () => {
+                const url = (scriptUrlInput?.value || '').trim();
+                if (url.includes('docs.google.com/spreadsheets')) {
+                    urlWarning?.classList.remove('hidden');
+                    showToast('請改貼部署後結尾為 /exec 的 Web App 網址！', 'error');
+                    return;
+                }
+                urlWarning?.classList.add('hidden');
+
+                if (!url) {
+                    savedWebAppUrl = '';
+                    localStorage.removeItem(WEB_APP_URL_KEY);
+                    showToast('已清除雲端試算表 Web App 網址設定', 'success');
+                    return;
+                }
+
+                if (!url.startsWith('https://script.google.com/')) {
+                    showToast('請輸入以 https://script.google.com/ 開頭的網址', 'error');
+                    return;
+                }
+
+                savedWebAppUrl = url;
+                localStorage.setItem(WEB_APP_URL_KEY, url);
+                showToast('已儲存雲端試算表 Web App 網址！', 'success');
+            });
+
+            scriptUrlInput?.addEventListener('input', () => {
+                const val = scriptUrlInput.value.trim();
+                if (val.includes('docs.google.com/spreadsheets')) {
+                    urlWarning?.classList.remove('hidden');
+                } else {
+                    urlWarning?.classList.add('hidden');
+                }
+            });
+
+            // Download HTML with Embedded Web App URL
+            downloadConfiguredHtmlBtn?.addEventListener('click', () => {
+                const urlToEmbed = (scriptUrlInput?.value || '').trim() || savedWebAppUrl;
+                if (!urlToEmbed || !urlToEmbed.startsWith('https://script.google.com/')) {
+                    showToast('請先填入有效的 Google Apps Script Web App 網址！', 'error');
+                    return;
+                }
+
+                let htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+                htmlContent = htmlContent.replace(
+                    /let savedWebAppUrl = localStorage\.getItem\(WEB_APP_URL_KEY\) \|\| '';/,
+                    `let savedWebAppUrl = localStorage.getItem(WEB_APP_URL_KEY) || '${urlToEmbed.replace(/'/g, "\\'")}';`
+                );
+
+                const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
+                const downloadLink = document.createElement('a');
+                downloadLink.href = URL.createObjectURL(blob);
+                downloadLink.download = 'index.html';
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+                URL.revokeObjectURL(downloadLink.href);
+                showToast('已下載內建 Web App 網址的正式版 index.html！', 'success');
+            });
+
+            // Classroom Modal Elements
+            const openClassroomBtn = document.getElementById('open-classroom-btn');
+            const closeClassroomBtn = document.getElementById('close-classroom-btn');
+            const confirmClassroomBtn = document.getElementById('confirm-classroom-btn');
+            const classroomModal = document.getElementById('classroom-modal');
+
+            function toggleClassroomModal(show) {
+                if (!classroomModal) return;
+                if (show) {
+                    classroomModal.classList.remove('opacity-0', 'pointer-events-none');
+                } else {
+                    classroomModal.classList.add('opacity-0', 'pointer-events-none');
+                }
+            }
+
+            openClassroomBtn?.addEventListener('click', () => toggleClassroomModal(true));
+            closeClassroomBtn?.addEventListener('click', () => toggleClassroomModal(false));
+            confirmClassroomBtn?.addEventListener('click', () => toggleClassroomModal(false));
+            classroomModal?.addEventListener('click', (e) => {
+                if (e.target === classroomModal) {
+                    toggleClassroomModal(false);
+                }
+            });
+
+            // ----------------------------------------------------
+            // 3. Phone Input Auto-Formatting (09XX-XXXXXX)
+            // ----------------------------------------------------
+            phoneInput.addEventListener('input', (e) => {
+                let digits = e.target.value.replace(/\D/g, '');
+                if (digits.length > 10) digits = digits.slice(0, 10);
+                
+                if (digits.length > 4) {
+                    e.target.value = digits.slice(0, 4) + '-' + digits.slice(4);
+                } else {
+                    e.target.value = digits;
+                }
+                phoneError.classList.add('hidden');
+            });
+
+            lineIdInput.addEventListener('input', () => lineError.classList.add('hidden'));
+
+            // ----------------------------------------------------
+            // 4. Form Validation & Submission Logic
+            // ----------------------------------------------------
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                let isValid = true;
+
+                // Validate Region
+                if (!regionSelect.value) {
+                    regionError.classList.remove('hidden');
+                    isValid = false;
+                }
+
+                // Validate Location (if visible & required)
+                const isLocationRequired = regionSelect.value && regionSelect.value !== '中苑本部';
+                if (isLocationRequired && !locationSelect.value) {
+                    if (locationError) locationError.classList.remove('hidden');
+                    isValid = false;
+                }
+
+                // Validate Class Group
+                const numVal = classNumInput.value.trim();
+                const classNumRegex = /^\d{3}$/;
+                if (!yearSelect.value || !seriesSelect.value || !classNumRegex.test(numVal)) {
+                    classError.classList.remove('hidden');
+                    isValid = false;
+                }
+
+                // Validate Phone Regex ^09\d{2}-\d{6}$
+                const phoneVal = phoneInput.value.trim();
+                const phoneRegex = /^09\d{2}-\d{6}$/;
+                if (!phoneRegex.test(phoneVal)) {
+                    phoneError.classList.remove('hidden');
+                    isValid = false;
+                }
+
+                // Validate LINE ID
+                if (!lineIdInput.value.trim()) {
+                    lineError.classList.remove('hidden');
+                    isValid = false;
+                }
+
+                // Validate Checkboxes (at least one)
+                const selectedEvents = Array.from(eventCheckboxes)
+                    .filter(cb => cb.checked)
+                    .map(cb => cb.value);
+
+                if (selectedEvents.length === 0) {
+                    eventsError.classList.remove('hidden');
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    showToast('請完整並正確填寫欄位資料！', 'error');
+                    return;
+                }
+
+                // Create Data Payload
+                const classYearVal = yearSelect.value;
+                const classSeriesVal = seriesSelect.value;
+                const classNumVal = classNumInput.value.trim();
+                const classCode = `${classYearVal}${classSeriesVal}${classNumVal}`;
+                const timestamp = new Date();
+                const formattedTime = `${timestamp.getFullYear()}/${String(timestamp.getMonth()+1).padStart(2,'0')}/${String(timestamp.getDate()).padStart(2,'0')} ${String(timestamp.getHours()).padStart(2,'0')}:${String(timestamp.getMinutes()).padStart(2,'0')}`;
+                const submissionId = `CX30-${Math.floor(1000 + Math.random() * 9000)}`;
+
+                const payload = {
+                    id: submissionId,
+                    region: regionSelect.value,
+                    location: isLocationRequired ? locationSelect.value : '中苑本部',
+                    classYear: classYearVal,
+                    classSeries: classSeriesVal,
+                    classNum: classNumVal,
+                    classCode: classCode,
+                    phone: phoneVal,
+                    lineId: lineIdInput.value.trim(),
+                    events: selectedEvents,
+                    time: formattedTime
+                };
+
+                // Show submitting state on UI
+                submitBtn.disabled = true;
+                const originalBtnHtml = submitBtn.innerHTML;
+                submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>同步寫入雲端試算表中...</span>`;
+
+                // Post to Google Sheet Web App if configured
+                const webAppUrl = savedWebAppUrl || scriptUrlInput.value.trim();
+                if (webAppUrl && webAppUrl.startsWith('http')) {
+                    try {
+                        await sendToGoogleSheet(webAppUrl, payload);
+                    } catch (err) {
+                        console.warn("GAS submission fallback:", err);
+                    }
+                }
+
+                // Reset button state
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnHtml;
+
+                // Save to localStorage backup
+                saveSubmission(payload);
+                lastSubmissionData = payload;
+
+                // Render Receipt
+                renderReceipt(payload);
+
+                // Show Success Screen
+                formCard.classList.add('hidden');
+                receiptCard.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                showToast('報名資料已成功送出與同步！', 'success');
+            });
+
+            // Post to GAS helper
+            async function sendToGoogleSheet(url, payload) {
+                try {
+                    await fetch(url, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                } catch (e) {
+                    console.error("Fetch to Google Sheets error:", e);
+                }
+            }
+
+            // Test Post Connection Button
+            testScriptBtn?.addEventListener('click', async () => {
+                const url = (scriptUrlInput?.value || '').trim() || savedWebAppUrl;
+                if (!url || !url.startsWith('http')) {
+                    showToast('請先貼入有效的 Google Apps Script 網頁應用程式網址！', 'error');
+                    return;
+                }
+
+                testScriptBtn.disabled = true;
+                const origHtml = testScriptBtn.innerHTML;
+                testScriptBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> 測試發送中...`;
+
+                const testPayload = {
+                    id: `TEST-${Math.floor(100 + Math.random() * 900)}`,
+                    region: '忠明',
+                    location: '忠明中科',
+                    classYear: '22',
+                    classSeries: '春',
+                    classNum: '002',
+                    classCode: '22春002',
+                    phone: '0912-345678',
+                    lineId: 'test_line_id',
+                    events: ['1/4(一)起~慈心理念班', '1/16 (六) 掏心柑，封茶香 客家酸柑茶手作體驗與蔬食饗宴'],
+                    time: new Date().toLocaleString('zh-TW')
+                };
+
+                await sendToGoogleSheet(url, testPayload);
+
+                testScriptBtn.disabled = false;
+                testScriptBtn.innerHTML = origHtml;
+                showToast('已向 Web App 發送測試資料！請檢查 Google 試算表有無增加該筆紀錄。', 'success');
+            });
+
+            // ----------------------------------------------------
+            // 5. Render Receipt Screen
+            // ----------------------------------------------------
+            function renderReceipt(data) {
+                document.getElementById('receipt-id').textContent = `#${data.id}`;
+                document.getElementById('receipt-region').textContent = data.region;
+                
+                const locationWrapper = document.getElementById('receipt-location-wrapper');
+                if (data.region === '中苑本部') {
+                    document.getElementById('receipt-location').textContent = '中苑本部';
+                } else {
+                    document.getElementById('receipt-location').textContent = data.location || '--';
+                }
+
+                document.getElementById('receipt-class').textContent = `${data.classCode}班`;
+                document.getElementById('receipt-phone').textContent = data.phone;
+                document.getElementById('receipt-line').textContent = data.lineId;
+                document.getElementById('receipt-time').textContent = data.time;
+
+                const eventsUl = document.getElementById('receipt-events');
+                eventsUl.innerHTML = '';
+                data.events.forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = "flex items-center gap-2 text-forest-700 font-bold bg-white px-3 py-2 rounded-lg border border-earth-200";
+                    li.innerHTML = `<i class="fa-solid fa-leaf text-forest-500 text-xs"></i> <span>${item}</span>`;
+                    eventsUl.appendChild(li);
+                });
+            }
+
+            // Copy Receipt Info Button
+            document.getElementById('copy-btn').addEventListener('click', () => {
+                if (!lastSubmissionData) return;
+                const locStr = lastSubmissionData.region === '中苑本部' ? '' : ` (${lastSubmissionData.location})`;
+                const summary = `【慈心30週年活動報名資訊】\n` +
+                    `報名編號：#${lastSubmissionData.id}\n` +
+                    `區域/地點：${lastSubmissionData.region}${locStr}\n` +
+                    `研討班別：${lastSubmissionData.classCode}班\n` +
+                    `聯繫電話：${lastSubmissionData.phone}\n` +
+                    `LINE ID：${lastSubmissionData.lineId}\n` +
+                    `報名項目：${lastSubmissionData.events.join('、 ')}\n` +
+                    `報名時間：${lastSubmissionData.time}`;
+
+                copyToClipboard(summary, '已複製報名資訊至剪貼簿！');
+            });
+
+            // Reset Form Button
+            document.getElementById('reset-btn').addEventListener('click', () => {
+                form.reset();
+                locationContainer.classList.add('hidden');
+                eventCards.forEach(card => card.classList.remove('selected'));
+                updateClassPreview();
+                receiptCard.classList.add('hidden');
+                formCard.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // ----------------------------------------------------
+            // 6. Clipboard Helper
+            // ----------------------------------------------------
+            function copyToClipboard(text, successMsg = '已複製到剪貼簿！') {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-9999px";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast(successMsg, 'success');
+                } catch (err) {
+                    showToast('複製失敗，請手動選取文字複製', 'error');
+                }
+                document.body.removeChild(textArea);
+            }
+
+            // ----------------------------------------------------
+            // 7. Toast Notification Handler
+            // ----------------------------------------------------
+            function showToast(msg, type = 'success') {
+                const toast = document.getElementById('toast');
+                const toastMsg = document.getElementById('toast-msg');
+                const toastIcon = document.getElementById('toast-icon');
+
+                toastMsg.textContent = msg;
+                if (type === 'success') {
+                    toastIcon.className = 'fa-solid fa-circle-check text-emerald-400 text-lg';
+                } else {
+                    toastIcon.className = 'fa-solid fa-triangle-exclamation text-amber-400 text-lg';
+                }
+
+                toast.classList.remove('translate-y-[-100px]', 'opacity-0');
+                toast.classList.add('translate-y-0', 'opacity-100');
+
+                setTimeout(() => {
+                    toast.classList.remove('translate-y-0', 'opacity-100');
+                    toast.classList.add('translate-y-[-100px]', 'opacity-0');
+                }, 3500);
+            }
+
+            // ----------------------------------------------------
+            // 8. Admin Storage & CSV Export Logic
+            // ----------------------------------------------------
+            const STORAGE_KEY = 'cixin_30th_registrations';
+
+            function getStoredSubmissions() {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                return raw ? JSON.parse(raw) : [];
+            }
+
+            function saveSubmission(item) {
+                const current = getStoredSubmissions();
+                current.unshift(item); // Newest first
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
+            }
+
+            function renderAdminTable() {
+                const data = getStoredSubmissions();
+                dataCountSpan.textContent = data.length;
+
+                if (data.length === 0) {
+                    adminTableBody.innerHTML = '';
+                    noDataMsg.classList.remove('hidden');
+                    return;
+                }
+
+                noDataMsg.classList.add('hidden');
+                adminTableBody.innerHTML = data.map((item, idx) => `
+                    <tr class="hover:bg-earth-50 transition-colors">
+                        <td class="p-2 font-medium text-earth-600">${data.length - idx}</td>
+                        <td class="p-2 whitespace-nowrap text-earth-600">${item.time}</td>
+                        <td class="p-2 font-bold text-earth-800">${item.region}</td>
+                        <td class="p-2 text-earth-700 font-medium">${item.location || '中苑本部'}</td>
+                        <td class="p-2 font-bold text-forest-700">${item.classCode}</td>
+                        <td class="p-2 font-mono">${item.phone}</td>
+                        <td class="p-2 font-mono">${item.lineId}</td>
+                        <td class="p-2 max-w-xs truncate" title="${item.events.join(', ')}">
+                            ${item.events.map(e => `<span class="inline-block bg-forest-100 text-forest-700 text-[10px] font-bold px-1.5 py-0.5 rounded mr-1 mb-1">${e}</span>`).join('')}
+                        </td>
+                        <td class="p-2 text-center">
+                            <button onclick="deleteSingleItem('${item.id}')" class="text-rose-500 hover:text-rose-700 p-1 text-xs">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            window.deleteSingleItem = function(id) {
+                let current = getStoredSubmissions();
+                current = current.filter(item => item.id !== id);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
+                renderAdminTable();
+                showToast('已刪除該筆備份紀錄', 'success');
+            };
+
+            // Open/Close Admin Modal
+            openAdminBtn.addEventListener('click', () => {
+                renderAdminTable();
+                adminModal.classList.remove('opacity-0', 'pointer-events-none');
+            });
+
+            closeAdminBtn.addEventListener('click', () => {
+                adminModal.classList.add('opacity-0', 'pointer-events-none');
+            });
+
+            adminModal.addEventListener('click', (e) => {
+                if (e.target === adminModal) {
+                    adminModal.classList.add('opacity-0', 'pointer-events-none');
+                }
+            });
+
+            // Clear All Data
+            clearDataBtn.addEventListener('click', () => {
+                if (getStoredSubmissions().length === 0) return;
+                localStorage.removeItem(STORAGE_KEY);
+                renderAdminTable();
+                showToast('所有本機暫存資料已清空！', 'success');
+            });
+
+            // Export to CSV UTF-8 BOM
+            exportCsvBtn.addEventListener('click', () => {
+                const data = getStoredSubmissions();
+                if (data.length === 0) {
+                    showToast('無本機備份資料可供匯出！', 'error');
+                    return;
+                }
+
+                // CSV Headers with 上課地點
+                let csvContent = "報名編號,報名時間,所屬區域,上課地點,研討班別,聯繫電話,LINE ID,報名活動項目\n";
+
+                data.forEach((item) => {
+                    const locVal = item.location || '中苑本部';
+                    const eventsStr = `"${item.events.join('; ')}"`;
+                    const line = `"${item.id}","${item.time}","${item.region}","${locVal}","${item.classCode}","${item.phone}","${item.lineId}",${eventsStr}\n`;
+                    csvContent += line;
+                });
+
+                // Add UTF-8 BOM for Excel compatibility
+                const bom = "\uFEFF";
+                const blob = new Blob([bom + csvContent], { type: "text/csv;charset=utf-8;" });
+                const url = URL.createObjectURL(blob);
+                
+                const link = document.createElement("a");
+                link.setAttribute("href", url);
+                const dateStr = new Date().toISOString().slice(0, 10);
+                link.setAttribute("download", `慈心30週年_線上報名名單_${dateStr}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                showToast('已開始下載 UTF-8 BOM 格式 CSV 檔！', 'success');
+            });
+
+        });
+    </script>
+</body>
+</html>
