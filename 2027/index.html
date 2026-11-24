@@ -552,6 +552,7 @@
                                             <i class="fa-solid fa-users text-[10px]"></i>
                                             <span id="quota-text">剩餘 40 / 40 位</span>
                                         </span>
+                                        <span id="quota-sync-status" class="text-[11px] text-earth-600 font-medium">即時同步中</span>
                                     </div>
                                 </div>
                                 <h3 class="text-base sm:text-lg font-bold text-earth-900 mt-2 font-title leading-snug">
@@ -677,16 +678,12 @@
 
     </main>
 
-    <!-- Footer & Admin Tool Trigger -->
+    <!-- Footer -->
     <footer class="w-full bg-earth-100 border-t border-earth-200 py-6 px-4 mt-12 text-center text-xs text-earth-600">
-        <div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-3">
             <div>
                 © 慈心有機農業發展基金會 30週年慶祝系列活動
             </div>
-            <button id="open-admin-btn" class="inline-flex items-center gap-1.5 text-earth-600 hover:text-forest-700 bg-earth-200/70 hover:bg-earth-200 px-3 py-1.5 rounded-lg transition-all font-medium">
-                <i class="fa-solid fa-gear text-xs"></i>
-                <span>⚙️ 雲端試算表串接與名單管理</span>
-            </button>
         </div>
     </footer>
 
@@ -1007,9 +1004,6 @@ function doGet(e) {
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            // Target Spreadsheet ID
-            const TARGET_SPREADSHEET_ID = '1i70R06W6_c83wjZWbTSvYEImuS1_5-5SfJ-or4HkARA';
-
             // Location Options Mapping
             const locationMap = {
                 '忠明': ['忠明', '忠明中科', '忠明公益', '忠明烏日', '忠明逢甲', '忠明學府', '忠明興大'],
@@ -1041,14 +1035,15 @@ function doGet(e) {
             const event2Card = document.getElementById('event-2-card');
             const quotaTextEl = document.getElementById('quota-text');
             const quotaBadgeEl = document.getElementById('quota-badge');
+            const quotaSyncStatusEl = document.getElementById('quota-sync-status');
             const submitBtn = document.getElementById('submit-btn');
 
             const EVENT2_QUOTA_LIMIT = 40;
             const EVENT2_NAME = '1/16 (六) 掏心柑，封茶香 客家酸柑茶手作體驗與蔬食饗宴';
             let sheetBookedCount = null;
+            const QUOTA_POLL_INTERVAL_MS = 15000;
             const classError = document.getElementById('class-error');
             const phoneError = document.getElementById('phone-error');
-            const lineError = document.getElementById('line-error');
             const emailError = document.getElementById('email-error');
             const eventsError = document.getElementById('events-error');
 
@@ -1079,30 +1074,10 @@ function doGet(e) {
                 if (locationError) locationError.classList.add('hidden');
             });
 
-            // Admin & Script Setting Elements
-            const openAdminBtn = document.getElementById('open-admin-btn');
-            const closeAdminBtn = document.getElementById('close-admin-btn');
-            const adminModal = document.getElementById('admin-modal');
-            const scriptUrlInput = document.getElementById('script-url-input');
-            const saveUrlBtn = document.getElementById('save-url-btn');
-            const urlWarning = document.getElementById('url-warning');
-            const testScriptBtn = document.getElementById('test-script-btn');
-            const copyGasCodeBtn = document.getElementById('copy-gas-code-btn');
-            const downloadConfiguredHtmlBtn = document.getElementById('download-configured-html-btn');
-            const dataCountSpan = document.getElementById('data-count');
-            const adminTableBody = document.getElementById('admin-table-body');
-            const noDataMsg = document.getElementById('no-data-msg');
-            const clearDataBtn = document.getElementById('clear-data-btn');
-            const exportCsvBtn = document.getElementById('export-csv-btn');
-
             const WEB_APP_URL_KEY = 'cixin_30th_gas_webapp_url';
             const DEFAULT_GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxIMbGUYaAHG1XdSkhtSH1uEOi5qLEHfr8KvdYFiPNICIlyx2WaxVlmcVqFcTI3KvTc/exec';
             let savedWebAppUrl = localStorage.getItem(WEB_APP_URL_KEY) || DEFAULT_GAS_WEB_APP_URL;
             let lastSubmissionData = null;
-
-            if (scriptUrlInput && savedWebAppUrl) {
-                scriptUrlInput.value = savedWebAppUrl;
-            }
 
             // Event Card Selection Toggle
             eventCards.forEach((card) => {
@@ -1151,75 +1126,6 @@ function doGet(e) {
                 updateClassPreview();
             });
             updateClassPreview();
-
-            // Copy GAS Script Code
-            copyGasCodeBtn?.addEventListener('click', () => {
-                const gasCodeEl = document.getElementById('gas-code');
-                if (gasCodeEl) {
-                    copyToClipboard(gasCodeEl.textContent, '已複製 Google Apps Script 程式碼！');
-                }
-            });
-
-            // Save Web App URL
-            saveUrlBtn?.addEventListener('click', () => {
-                const url = (scriptUrlInput?.value || '').trim();
-                if (url.includes('docs.google.com/spreadsheets')) {
-                    urlWarning?.classList.remove('hidden');
-                    showToast('請改貼部署後結尾為 /exec 的 Web App 網址！', 'error');
-                    return;
-                }
-                urlWarning?.classList.add('hidden');
-
-                if (!url) {
-                    savedWebAppUrl = '';
-                    localStorage.removeItem(WEB_APP_URL_KEY);
-                    showToast('已清除雲端試算表 Web App 網址設定', 'success');
-                    return;
-                }
-
-                if (!url.startsWith('https://script.google.com/')) {
-                    showToast('請輸入以 https://script.google.com/ 開頭的網址', 'error');
-                    return;
-                }
-
-                savedWebAppUrl = url;
-                localStorage.setItem(WEB_APP_URL_KEY, url);
-                showToast('已儲存雲端試算表 Web App 網址！', 'success');
-            });
-
-            scriptUrlInput?.addEventListener('input', () => {
-                const val = scriptUrlInput.value.trim();
-                if (val.includes('docs.google.com/spreadsheets')) {
-                    urlWarning?.classList.remove('hidden');
-                } else {
-                    urlWarning?.classList.add('hidden');
-                }
-            });
-
-            // Download HTML with Embedded Web App URL
-            downloadConfiguredHtmlBtn?.addEventListener('click', () => {
-                const urlToEmbed = (scriptUrlInput?.value || '').trim() || savedWebAppUrl;
-                if (!urlToEmbed || !urlToEmbed.startsWith('https://script.google.com/')) {
-                    showToast('請先填入有效的 Google Apps Script Web App 網址！', 'error');
-                    return;
-                }
-
-                let htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
-                htmlContent = htmlContent.replace(
-                    /let savedWebAppUrl = localStorage\.getItem\(WEB_APP_URL_KEY\) \|\| '';/,
-                    `let savedWebAppUrl = localStorage.getItem(WEB_APP_URL_KEY) || '${urlToEmbed.replace(/'/g, "\\'")}';`
-                );
-
-                const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
-                const downloadLink = document.createElement('a');
-                downloadLink.href = URL.createObjectURL(blob);
-                downloadLink.download = 'index.html';
-                document.body.appendChild(downloadLink);
-                downloadLink.click();
-                document.body.removeChild(downloadLink);
-                URL.revokeObjectURL(downloadLink.href);
-                showToast('已下載內建 Web App 網址的正式版 index.html！', 'success');
-            });
 
             // Classroom Modal Elements
             const openClassroomBtn = document.getElementById('open-classroom-btn');
@@ -1372,8 +1278,7 @@ function doGet(e) {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalBtnHtml;
 
-                // Save to localStorage backup
-                saveSubmission(payload);
+                // Update local quota state and refresh from sheet
                 lastSubmissionData = payload;
                 if (selectedEvents.includes(EVENT2_NAME) && typeof sheetBookedCount === 'number') {
                     sheetBookedCount += 1;
@@ -1385,8 +1290,8 @@ function doGet(e) {
                 renderReceipt(payload);
 
                 // Show Success Screen
-                formCard.classList.add('hidden');
-                receiptCard.classList.remove('hidden');
+                document.getElementById('form-card')?.classList.add('hidden');
+                document.getElementById('receipt-card')?.classList.remove('hidden');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 showToast(emailVal ? '報名資料已送出，回條將自動寄至您的信箱！' : '報名資料已成功送出與同步！', 'success');
             });
@@ -1405,40 +1310,6 @@ function doGet(e) {
                     console.error("Fetch to Google Sheets error:", e);
                 }
             }
-
-            // Test Post Connection Button
-            testScriptBtn?.addEventListener('click', async () => {
-                const url = (scriptUrlInput?.value || '').trim() || savedWebAppUrl;
-                if (!url || !url.startsWith('http')) {
-                    showToast('請先貼入有效的 Google Apps Script 網頁應用程式網址！', 'error');
-                    return;
-                }
-
-                testScriptBtn.disabled = true;
-                const origHtml = testScriptBtn.innerHTML;
-                testScriptBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> 測試發送中...`;
-
-                const testPayload = {
-                    id: `TEST-${Math.floor(100 + Math.random() * 900)}`,
-                    region: '忠明',
-                    location: '忠明中科',
-                    classYear: '22',
-                    classSeries: '春',
-                    classNum: '002',
-                    classCode: '22春002',
-                    phone: '0912-345678',
-                    lineId: 'test_line_id',
-                    email: (emailInput?.value || '').trim(),
-                    events: ['1/4(一)起~慈心理念班', '1/16 (六) 掏心柑，封茶香 客家酸柑茶手作體驗與蔬食饗宴'],
-                    time: new Date().toLocaleString('zh-TW')
-                };
-
-                await sendToGoogleSheet(url, testPayload);
-
-                testScriptBtn.disabled = false;
-                testScriptBtn.innerHTML = origHtml;
-                showToast('已向 Web App 發送測試資料！請檢查 Google 試算表有無增加該筆紀錄。', 'success');
-            });
 
             // ----------------------------------------------------
             // 5. Render Receipt Screen
@@ -1494,8 +1365,8 @@ function doGet(e) {
                 eventCards.forEach(card => card.classList.remove('selected'));
                 updateClassPreview();
                 updateQuotaDisplay();
-                receiptCard.classList.add('hidden');
-                formCard.classList.remove('hidden');
+                document.getElementById('receipt-card')?.classList.add('hidden');
+                document.getElementById('form-card')?.classList.remove('hidden');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
 
@@ -1544,22 +1415,10 @@ function doGet(e) {
             }
 
             // ----------------------------------------------------
-            // 8. Admin Storage & CSV Export Logic
+            // 8. Quota Calculation & Sheet Sync Logic
             // ----------------------------------------------------
-            const STORAGE_KEY = 'cixin_30th_registrations';
-
-            function getStoredSubmissions() {
-                const raw = localStorage.getItem(STORAGE_KEY);
-                return raw ? JSON.parse(raw) : [];
-            }
-
             function countEvent2Registrations() {
-                if (typeof sheetBookedCount === 'number') {
-                    return sheetBookedCount;
-                }
-                return getStoredSubmissions().filter(item =>
-                    Array.isArray(item.events) && item.events.includes(EVENT2_NAME)
-                ).length;
+                return typeof sheetBookedCount === 'number' ? sheetBookedCount : 0;
             }
 
             function getRemainingQuota() {
@@ -1567,12 +1426,48 @@ function doGet(e) {
                 return Math.max(0, EVENT2_QUOTA_LIMIT - booked);
             }
 
+            // Update remaining quota badge and lock/unlock event 2 option when full
+            function updateQuotaDisplay() {
+                const baseRemaining = getRemainingQuota();
+                const isSelected = Boolean(event2Checkbox && event2Checkbox.checked);
+                const displayRemaining = Math.max(0, baseRemaining - (isSelected ? 1 : 0));
+
+                if (quotaTextEl) {
+                    quotaTextEl.textContent = `剩餘 ${displayRemaining} / ${EVENT2_QUOTA_LIMIT} 位`;
+                }
+
+                const isSoldOut = displayRemaining <= 0 && !isSelected;
+
+                if (event2Checkbox) {
+                    event2Checkbox.disabled = isSoldOut;
+                }
+
+                if (event2Card) {
+                    event2Card.classList.toggle('opacity-60', isSoldOut);
+                    event2Card.classList.toggle('cursor-not-allowed', isSoldOut);
+                    event2Card.classList.toggle('cursor-pointer', !isSoldOut);
+                }
+
+                if (quotaBadgeEl) {
+                    if (displayRemaining <= 0) {
+                        quotaBadgeEl.className = 'inline-flex items-center gap-1 text-xs font-bold text-white bg-rose-600 border border-rose-700 px-2.5 py-0.5 rounded-full';
+                    } else if (displayRemaining <= 10) {
+                        quotaBadgeEl.className = 'inline-flex items-center gap-1 text-xs font-bold text-amber-900 bg-amber-200 border border-amber-300 px-2.5 py-0.5 rounded-full';
+                    } else {
+                        quotaBadgeEl.className = 'inline-flex items-center gap-1 text-xs font-bold text-rose-700 bg-rose-100 border border-rose-200 px-2.5 py-0.5 rounded-full';
+                    }
+                }
+            }
+
             function syncQuotaFromSheet() {
-                const url = (savedWebAppUrl || scriptUrlInput?.value || '').trim();
+                const url = (savedWebAppUrl || '').trim();
                 if (!url || !url.startsWith('https://script.google.com/')) {
+                    if (quotaSyncStatusEl) quotaSyncStatusEl.textContent = '名額統計中';
                     updateQuotaDisplay();
                     return;
                 }
+
+                if (quotaSyncStatusEl) quotaSyncStatusEl.textContent = '同步中...';
 
                 const callbackName = 'cixinQuotaCb_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
                 const scriptEl = document.createElement('script');
@@ -1587,6 +1482,7 @@ function doGet(e) {
 
                 const timeoutId = setTimeout(() => {
                     cleanup();
+                    if (quotaSyncStatusEl) quotaSyncStatusEl.textContent = '待確認試算表';
                     updateQuotaDisplay();
                 }, 5000);
 
@@ -1595,6 +1491,15 @@ function doGet(e) {
                     cleanup();
                     if (data && data.status === 'ok' && typeof data.bookedCount === 'number') {
                         sheetBookedCount = data.bookedCount;
+                        if (quotaSyncStatusEl) {
+                            const now = new Date();
+                            const hh = String(now.getHours()).padStart(2, '0');
+                            const mm = String(now.getMinutes()).padStart(2, '0');
+                            const ss = String(now.getSeconds()).padStart(2, '0');
+                            quotaSyncStatusEl.textContent = `已同步 ${hh}:${mm}:${ss}`;
+                        }
+                    } else if (quotaSyncStatusEl) {
+                        quotaSyncStatusEl.textContent = '名額統計中';
                     }
                     updateQuotaDisplay();
                 };
@@ -1603,157 +1508,25 @@ function doGet(e) {
                 scriptEl.onerror = () => {
                     clearTimeout(timeoutId);
                     cleanup();
+                    if (quotaSyncStatusEl) quotaSyncStatusEl.textContent = '名額統計中';
                     updateQuotaDisplay();
                 };
                 document.body.appendChild(scriptEl);
             }
 
-            function getRemainingQuota() {
-                const booked = countEvent2Registrations();
-                return Math.max(0, EVENT2_QUOTA_LIMIT - booked);
-            }
-
-            function updateQuotaDisplay() {
-                const remaining = getRemainingQuota();
-                const isSelected = Boolean(event2Checkbox?.checked);
-                const effectiveRemaining = Math.max(0, remaining - (isSelected ? 1 : 0));
-
-                if (quotaTextEl) {
-                    quotaTextEl.textContent = remaining <= 0
-                        ? `已額滿 (0 / ${EVENT2_QUOTA_LIMIT} 位)`
-                        : `剩餘 ${effectiveRemaining} / ${EVENT2_QUOTA_LIMIT} 位`;
-                }
-
-                if (quotaBadgeEl) {
-                    quotaBadgeEl.className = remaining <= 0
-                        ? 'inline-flex items-center gap-1 text-xs font-bold text-white bg-rose-600 border border-rose-700 px-2.5 py-0.5 rounded-full'
-                        : effectiveRemaining <= 8
-                            ? 'inline-flex items-center gap-1 text-xs font-bold text-rose-800 bg-rose-100 border border-rose-300 px-2.5 py-0.5 rounded-full'
-                            : 'inline-flex items-center gap-1 text-xs font-bold text-amberTea-700 bg-amberTea-100 border border-amberTea-500/30 px-2.5 py-0.5 rounded-full';
-                }
-
-                if (event2Checkbox && event2Card) {
-                    if (remaining <= 0 && !isSelected) {
-                        event2Checkbox.disabled = true;
-                        event2Checkbox.checked = false;
-                        event2Card.classList.remove('selected');
-                        event2Card.classList.add('opacity-60', 'cursor-not-allowed');
-                    } else {
-                        event2Checkbox.disabled = false;
-                        event2Card.classList.remove('opacity-60', 'cursor-not-allowed');
-                    }
-                }
-            }
-
             updateQuotaDisplay();
             syncQuotaFromSheet();
 
-            function saveSubmission(item) {
-                const current = getStoredSubmissions();
-                current.unshift(item); // Newest first
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
-                renderAdminTable();
-            }
-
-            function renderAdminTable() {
-                const data = getStoredSubmissions();
-                dataCountSpan.textContent = data.length;
-
-                if (data.length === 0) {
-                    adminTableBody.innerHTML = '';
-                    noDataMsg.classList.remove('hidden');
-                    return;
+            setInterval(() => {
+                if (!document.hidden) {
+                    syncQuotaFromSheet();
                 }
+            }, QUOTA_POLL_INTERVAL_MS);
 
-                noDataMsg.classList.add('hidden');
-                adminTableBody.innerHTML = data.map((item, idx) => `
-                    <tr class="hover:bg-earth-50 transition-colors">
-                        <td class="p-2 font-medium text-earth-600">${data.length - idx}</td>
-                        <td class="p-2 whitespace-nowrap text-earth-600">${item.time}</td>
-                        <td class="p-2 font-bold text-earth-800">${item.region}</td>
-                        <td class="p-2 text-earth-700 font-medium">${item.location || '中苑本部'}</td>
-                        <td class="p-2 font-bold text-forest-700">${item.classCode}</td>
-                        <td class="p-2 font-mono">${item.phone}</td>
-                        <td class="p-2 font-mono">${item.lineId || '-'}</td>
-                        <td class="p-2 font-mono">${item.email || '-'}</td>
-                        <td class="p-2 max-w-xs truncate" title="${item.events.join(', ')}">
-                            ${item.events.map(e => `<span class="inline-block bg-forest-100 text-forest-700 text-[10px] font-bold px-1.5 py-0.5 rounded mr-1 mb-1">${e}</span>`).join('')}
-                        </td>
-                        <td class="p-2 text-center">
-                            <button onclick="deleteSingleItem('${item.id}')" class="text-rose-500 hover:text-rose-700 p-1 text-xs">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `).join('');
-            }
-
-            window.deleteSingleItem = function(id) {
-                let current = getStoredSubmissions();
-                current = current.filter(item => item.id !== id);
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
-                renderAdminTable();
-                updateQuotaDisplay();
-                showToast('已刪除該筆備份紀錄', 'success');
-            };
-
-            // Open/Close Admin Modal
-            openAdminBtn.addEventListener('click', () => {
-                renderAdminTable();
-                adminModal.classList.remove('opacity-0', 'pointer-events-none');
-            });
-
-            closeAdminBtn.addEventListener('click', () => {
-                adminModal.classList.add('opacity-0', 'pointer-events-none');
-            });
-
-            adminModal.addEventListener('click', (e) => {
-                if (e.target === adminModal) {
-                    adminModal.classList.add('opacity-0', 'pointer-events-none');
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden) {
+                    syncQuotaFromSheet();
                 }
-            });
-
-            // Clear All Data
-            clearDataBtn.addEventListener('click', () => {
-                if (getStoredSubmissions().length === 0) return;
-                localStorage.removeItem(STORAGE_KEY);
-                renderAdminTable();
-                updateQuotaDisplay();
-                showToast('所有本機暫存資料已清空！', 'success');
-            });
-
-            // Export to CSV UTF-8 BOM
-            exportCsvBtn.addEventListener('click', () => {
-                const data = getStoredSubmissions();
-                if (data.length === 0) {
-                    showToast('無本機備份資料可供匯出！', 'error');
-                    return;
-                }
-
-                // CSV Headers with 上課地點
-                let csvContent = "報名編號,報名時間,所屬區域,上課地點,研討班別,聯繫電話,LINE ID,電子信箱,報名活動項目\n";
-
-                data.forEach((item) => {
-                    const locVal = item.location || '中苑本部';
-                    const eventsStr = `"${item.events.join('; ')}"`;
-                    const line = `"${item.id}","${item.time}","${item.region}","${locVal}","${item.classCode}","${item.phone}","${item.lineId || ''}","${item.email || ''}",${eventsStr}\n`;
-                    csvContent += line;
-                });
-
-                // Add UTF-8 BOM for Excel compatibility
-                const bom = "\uFEFF";
-                const blob = new Blob([bom + csvContent], { type: "text/csv;charset=utf-8;" });
-                const url = URL.createObjectURL(blob);
-                
-                const link = document.createElement("a");
-                link.setAttribute("href", url);
-                const dateStr = new Date().toISOString().slice(0, 10);
-                link.setAttribute("download", `慈心30週年_線上報名名單_${dateStr}.csv`);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-
-                showToast('已開始下載 UTF-8 BOM 格式 CSV 檔！', 'success');
             });
 
         });
