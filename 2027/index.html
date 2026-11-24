@@ -1042,35 +1042,46 @@ function doGet(e) {
             const EVENT2_NAME = '1/16 (六) 掏心柑，封茶香 客家酸柑茶手作體驗與蔬食饗宴';
             let sheetBookedCount = null;
             const QUOTA_POLL_INTERVAL_MS = 15000;
+            const regionError = document.getElementById('region-error');
             const classError = document.getElementById('class-error');
             const phoneError = document.getElementById('phone-error');
             const emailError = document.getElementById('email-error');
             const eventsError = document.getElementById('events-error');
 
             // Handle Region Change -> Dynamic Location Options
-            regionSelect.addEventListener('change', () => {
-                regionError?.classList.add('hidden');
-                const selectedRegion = regionSelect.value;
-                
+            function handleRegionChange() {
+                if (regionError) regionError.classList.add('hidden');
+                const selectedRegion = regionSelect ? regionSelect.value : '';
+
                 if (selectedRegion && selectedRegion !== '中苑本部' && locationMap[selectedRegion]) {
-                    // Populate options
+                    const prevValue = locationSelect ? locationSelect.value : '';
                     const options = locationMap[selectedRegion];
-                    locationSelect.innerHTML = '<option value="" disabled selected>請選擇上課地點</option>' +
-                        options.map(loc => `<option value="${loc}">${loc}</option>`).join('');
-                    
-                    locationSelect.required = true;
+                    if (locationSelect) {
+                        locationSelect.innerHTML = '<option value="" disabled selected>請選擇上課地點</option>' +
+                            options.map(loc => `<option value="${loc}">${loc}</option>`).join('');
+                        if (prevValue && options.includes(prevValue)) {
+                            locationSelect.value = prevValue;
+                        }
+                        locationSelect.required = true;
+                        locationSelect.disabled = false;
+                    }
                     locationContainer?.classList.remove('hidden');
                 } else {
-                    // Reset and hide
-                    locationSelect.innerHTML = '<option value="" disabled selected>請選擇上課地點</option>';
-                    locationSelect.required = false;
-                    locationSelect.value = '';
+                    if (locationSelect) {
+                        locationSelect.innerHTML = '<option value="" disabled selected>請選擇上課地點</option>';
+                        locationSelect.required = false;
+                        locationSelect.value = '';
+                    }
                     locationContainer?.classList.add('hidden');
                     locationError?.classList.add('hidden');
                 }
-            });
+            }
 
-            locationSelect.addEventListener('change', () => {
+            regionSelect?.addEventListener('change', handleRegionChange);
+            regionSelect?.addEventListener('input', handleRegionChange);
+            handleRegionChange();
+
+            locationSelect?.addEventListener('change', () => {
                 if (locationError) locationError.classList.add('hidden');
             });
 
