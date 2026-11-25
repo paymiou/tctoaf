@@ -1366,7 +1366,7 @@
                 // Show submitting state on UI
                 submitBtn.disabled = true;
                 const originalBtnHtml = submitBtn.innerHTML;
-                submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>同步寫入雲端試算表與寄送回條中...</span>`;
+                submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>報名提交中...</span>`;
 
                 // Post to Google Sheet Web App
                 if (GAS_WEB_APP_URL && GAS_WEB_APP_URL.startsWith('https://')) {
