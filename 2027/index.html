@@ -769,7 +769,171 @@
                     <span>再填一筆報名</span>
                 </button>
             </div>
+
+            <!-- Section: 電子回條下方活動預告 -->
+            <div class="mt-8 pt-6 border-t border-earth-200 space-y-4">
+                <div class="flex items-center gap-2 text-base sm:text-lg font-extrabold text-earth-900 font-title">
+                    <i class="fa-solid fa-bullhorn text-rose-600"></i>
+                    <span>活動預告</span>
+                </div>
+
+                <!-- Card 1: 2026/12/11 (五) 慈心年度廣大供養 -->
+                <div class="bg-amber-50/70 border border-amber-200 rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="space-y-2">
+                        <!-- 主標 -->
+                        <div class="text-base sm:text-lg font-extrabold tracking-wide text-amberTea-700 font-title">
+                            2026/12/11 (五) 慈心年度廣大供養
+                        </div>
+                        <!-- 副標 -->
+                        <h3 class="text-base sm:text-lg font-extrabold text-forest-800 font-title leading-snug flex items-center gap-1.5">
+                            <i class="fa-solid fa-wheat-awn text-amberTea-600"></i>
+                            <span>慈心29 X 善業豐收念師恩</span>
+                        </h3>
+                        <!-- 時間 -->
+                        <p class="text-xs sm:text-sm text-earth-800 flex items-center gap-1.5 font-bold">
+                            <i class="fa-regular fa-clock text-amberTea-600"></i>
+                            <span>10:15-11:30</span>
+                        </p>
+                        <!-- 地點 -->
+                        <p class="text-xs sm:text-sm text-earth-800 flex items-center gap-1.5 font-bold">
+                            <i class="fa-solid fa-location-dot text-rose-600"></i>
+                            <span>台中學苑 12樓佛堂</span>
+                        </p>
+                        <!-- 備註 -->
+                        <p class="text-xs sm:text-sm font-extrabold text-amberTea-700 flex items-center gap-1.5 pt-0.5">
+                            <i class="fa-solid fa-star text-amberTea-600 shrink-0"></i>
+                            <span>總結展覽至12/18(五)中午，歡迎隨喜看展</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 2: 2027/03/14 (日) 田裡有腳印市集 -->
+                <div class="bg-rose-50 border border-rose-200 rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="space-y-2">
+                        <div class="flex flex-wrap items-center gap-1.5 font-title">
+                            <span class="text-base sm:text-lg font-extrabold tracking-wide text-rose-800">2027/03/14 (日)</span>
+                            <span class="text-base sm:text-lg font-extrabold tracking-wide text-rose-800">田裡有腳印市集</span>
+                        </div>
+                        <h3 class="text-base sm:text-lg font-extrabold text-forest-800 font-title leading-snug flex items-center gap-1.5">
+                            <i class="fa-solid fa-seedling text-forest-600"></i>
+                            <span>綠保Ｘ蔬食Ｘ給土地的美好回禮</span>
+                        </h3>
+                        <div class="space-y-1 text-xs sm:text-sm text-earth-800 font-bold">
+                            <p class="flex items-center gap-1.5">
+                                <i class="fa-solid fa-location-dot text-rose-600"></i>
+                                <span>捷運松竹站 2號出口 X 台鐵松竹站</span>
+                            </p>
+                            <p class="text-xs text-earth-700 font-medium" style="padding-left: 2em;">
+                                (臺中市北屯區北屯路458號)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <!-- Section: 疑難雜症提問功能區 -->
+        <section id="inquiry-section" class="mt-8 bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-earth-200/80">
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-earth-200 mb-4">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-amberTea-100 text-amberTea-700 flex items-center justify-center text-base shrink-0">
+                        <i class="fa-solid fa-circle-question"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold text-earth-900 font-title">疑難雜症提問</h2>
+                        <p class="text-xs text-earth-600">對課程、交通或報名有任何疑問嗎？歡迎留言給活動窗口</p>
+                    </div>
+                </div>
+                <button type="button" id="toggle-inquiry-btn"
+                    class="inline-flex items-center gap-1.5 bg-forest-600 hover:bg-forest-700 text-white font-bold px-4 py-2 rounded-xl text-xs sm:text-sm shadow-sm transition-all cursor-pointer">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <span id="toggle-inquiry-text">點此填寫問題</span>
+                </button>
+            </div>
+
+            <!-- Collapsible Inquiry Form -->
+            <div id="inquiry-form-wrapper" class="hidden pt-2">
+                <form id="inquiry-form" class="space-y-4" novalidate>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- 提問人姓名 -->
+                        <div class="space-y-1.5">
+                            <label for="inquiry-name" class="block text-sm font-bold text-earth-800">
+                                您的姓名 <span class="text-rose-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <input type="text" id="inquiry-name" placeholder="請輸入您的姓名" maxlength="30" required
+                                    class="w-full bg-earth-50 border border-earth-300 text-earth-900 text-sm rounded-xl pl-10 pr-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:bg-white transition-all">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-forest-600">
+                                    <i class="fa-regular fa-user"></i>
+                                </div>
+                            </div>
+                            <p id="inquiry-name-error" class="text-xs text-rose-500 hidden flex items-center gap-1">
+                                <i class="fa-solid fa-circle-exclamation"></i> 請輸入您的姓名
+                            </p>
+                        </div>
+
+                        <!-- 提問人 Email -->
+                        <div class="space-y-1.5">
+                            <label for="inquiry-email" class="block text-sm font-bold text-earth-800">
+                                電子信箱 (Email) <span class="text-rose-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <input type="email" id="inquiry-email" placeholder="example@gmail.com" maxlength="100" required
+                                    class="w-full bg-earth-50 border border-earth-300 text-earth-900 text-sm rounded-xl pl-10 pr-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:bg-white transition-all">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-forest-600">
+                                    <i class="fa-regular fa-envelope"></i>
+                                </div>
+                            </div>
+                            <p id="inquiry-email-error" class="text-xs text-rose-500 hidden flex items-center gap-1">
+                                <i class="fa-solid fa-circle-exclamation"></i> 請輸入有效的電子信箱格式
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 問題內容 -->
+                    <div class="space-y-1.5">
+                        <label for="inquiry-question" class="block text-sm font-bold text-earth-800">
+                            想詢問的問題 <span class="text-rose-500">*</span>
+                        </label>
+                        <textarea id="inquiry-question" rows="4" maxlength="1000" placeholder="請簡述您的問題（例如：研討班別、連線教室、酸柑茶手作體驗或繳費相關疑問）..." required
+                            class="w-full bg-earth-50 border border-earth-300 text-earth-900 text-sm rounded-xl p-3.5 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:bg-white transition-all resize-y"></textarea>
+                        <p id="inquiry-question-error" class="text-xs text-rose-500 hidden flex items-center gap-1">
+                            <i class="fa-solid fa-circle-exclamation"></i> 請輸入您想詢問的問題內容
+                        </p>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+                        <p class="text-xs text-earth-600 flex items-center gap-1.5">
+                            <i class="fa-solid fa-paper-plane text-amberTea-600"></i>
+                            <span>送出後將直接寄信通知活動窗口（李怡霈師姐）並回信至您的信箱</span>
+                        </p>
+                        <button type="submit" id="inquiry-submit-btn"
+                            class="bg-amberTea-500 hover:bg-amberTea-600 text-white font-bold py-3 px-6 rounded-xl shadow transition-all flex items-center justify-center gap-2 text-sm shrink-0 cursor-pointer">
+                            <i class="fa-solid fa-envelope-circle-check"></i>
+                            <span>送出提問信件</span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Inquiry Sent Confirmation -->
+                <div id="inquiry-success-box" class="hidden bg-forest-50 border border-forest-500/30 rounded-2xl p-5 text-center space-y-2.5">
+                    <div class="w-11 h-11 rounded-full bg-forest-100 text-forest-700 flex items-center justify-center mx-auto text-xl">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-forest-800 font-title">已成功寄出您的提問！</h3>
+                    <p class="text-xs sm:text-sm text-earth-700">
+                        我們已將您的問題發送給活動窗口，窗口將會透過您留下的 Email 與您聯繫。
+                    </p>
+                    <div class="pt-1">
+                        <button type="button" id="inquiry-again-btn"
+                            class="inline-flex items-center gap-1.5 bg-white hover:bg-earth-50 text-forest-700 font-bold border border-forest-500/30 px-4 py-2 rounded-xl text-xs transition-all cursor-pointer">
+                            <i class="fa-solid fa-rotate-left"></i>
+                            <span>繼續提出其他問題</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
 
     </main>
 
@@ -1542,6 +1706,118 @@
             document.addEventListener('visibilitychange', () => {
                 if (!document.hidden) {
                     syncQuotaFromSheet();
+                }
+            });
+
+            // ----------------------------------------------------
+            // 9. 疑難雜症提問表單邏輯 (寄信至活動窗口)
+            // ----------------------------------------------------
+            const toggleInquiryBtn = document.getElementById('toggle-inquiry-btn');
+            const toggleInquiryText = document.getElementById('toggle-inquiry-text');
+            const inquiryFormWrapper = document.getElementById('inquiry-form-wrapper');
+            const inquiryForm = document.getElementById('inquiry-form');
+            const inquiryNameInput = document.getElementById('inquiry-name');
+            const inquiryEmailInput = document.getElementById('inquiry-email');
+            const inquiryQuestionInput = document.getElementById('inquiry-question');
+            const inquiryNameError = document.getElementById('inquiry-name-error');
+            const inquiryEmailError = document.getElementById('inquiry-email-error');
+            const inquiryQuestionError = document.getElementById('inquiry-question-error');
+            const inquirySubmitBtn = document.getElementById('inquiry-submit-btn');
+            const inquirySuccessBox = document.getElementById('inquiry-success-box');
+            const inquiryAgainBtn = document.getElementById('inquiry-again-btn');
+
+            toggleInquiryBtn?.addEventListener('click', () => {
+                if (!inquiryFormWrapper) return;
+                const isHidden = inquiryFormWrapper.classList.contains('hidden');
+                inquiryFormWrapper.classList.toggle('hidden', !isHidden);
+                if (toggleInquiryText) {
+                    toggleInquiryText.textContent = isHidden ? '收合提問表單' : '點此填寫問題';
+                }
+                if (isHidden) {
+                    setTimeout(() => {
+                        inquiryNameInput?.focus();
+                    }, 100);
+                }
+            });
+
+            inquiryNameInput?.addEventListener('input', () => inquiryNameError?.classList.add('hidden'));
+            inquiryEmailInput?.addEventListener('input', () => inquiryEmailError?.classList.add('hidden'));
+            inquiryQuestionInput?.addEventListener('input', () => inquiryQuestionError?.classList.add('hidden'));
+
+            inquiryAgainBtn?.addEventListener('click', () => {
+                inquiryForm?.reset();
+                inquirySuccessBox?.classList.add('hidden');
+                inquiryForm?.classList.remove('hidden');
+                inquiryNameInput?.focus();
+            });
+
+            inquiryForm?.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                let isInquiryValid = true;
+                const errMsgs = [];
+                let firstErrEl = null;
+
+                const qName = (inquiryNameInput?.value || '').trim();
+                const qEmail = (inquiryEmailInput?.value || '').trim();
+                const qText = (inquiryQuestionInput?.value || '').trim();
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                if (!qName) {
+                    inquiryNameError?.classList.remove('hidden');
+                    errMsgs.push('您的姓名：請輸入您的姓名');
+                    if (!firstErrEl) firstErrEl = inquiryNameInput;
+                    isInquiryValid = false;
+                }
+
+                if (!qEmail || !emailRegex.test(qEmail)) {
+                    inquiryEmailError?.classList.remove('hidden');
+                    errMsgs.push('電子信箱 (Email)：請輸入有效的電子信箱格式');
+                    if (!firstErrEl) firstErrEl = inquiryEmailInput;
+                    isInquiryValid = false;
+                }
+
+                if (!qText) {
+                    inquiryQuestionError?.classList.remove('hidden');
+                    errMsgs.push('想詢問的問題：請輸入您的問題內容');
+                    if (!firstErrEl) firstErrEl = inquiryQuestionInput;
+                    isInquiryValid = false;
+                }
+
+                if (!isInquiryValid) {
+                    showValidationModal(errMsgs, firstErrEl);
+                    return;
+                }
+
+                const now = new Date();
+                const timeStr = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+                const inquiryPayload = {
+                    action: 'inquiry',
+                    name: qName,
+                    email: qEmail,
+                    question: qText,
+                    time: timeStr
+                };
+
+                if (inquirySubmitBtn) {
+                    inquirySubmitBtn.disabled = true;
+                    inquirySubmitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>寄送信件給窗口中...</span>`;
+                }
+
+                try {
+                    if (GAS_WEB_APP_URL && GAS_WEB_APP_URL.startsWith('https://')) {
+                        await sendToGoogleSheet(GAS_WEB_APP_URL, inquiryPayload);
+                    }
+                    inquiryForm.classList.add('hidden');
+                    inquirySuccessBox?.classList.remove('hidden');
+                    showToast('已成功寄出您的提問信件至活動窗口！', 'success');
+                } catch (err) {
+                    showToast('寄送失敗，請稍後再試或直接來電聯繫窗口', 'error');
+                } finally {
+                    if (inquirySubmitBtn) {
+                        inquirySubmitBtn.disabled = false;
+                        inquirySubmitBtn.innerHTML = `<i class="fa-solid fa-envelope-circle-check"></i> <span>送出提問信件</span>`;
+                    }
                 }
             });
 
