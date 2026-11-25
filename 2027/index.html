@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>「慈心❸⓿週年」系列活動開始報名囉❗</title>
+    <title>「慈心❸⓿週年」系列活動開放報名囉❗</title>
+    <meta name="description" content="慈心基金會邁入30週年，依著師父的慈悲心開展出有機、綠保、蔬食、淨塑等多面向的環境守護行動，邀您深入學習師父的慈悲心意，長養你我心中的慈心。">
+    <!-- Open Graph / LINE 分享預覽設定 -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="zh_TW">
+    <meta property="og:site_name" content="慈心基金會—台中推廣課">
+    <meta property="og:title" content="「慈心❸⓿週年」系列活動開放報名囉❗">
+    <meta property="og:description" content="慈心基金會邁入30週年，依著師父的慈悲心開展出有機、綠保、蔬食、淨塑等多面向的環境守護行動，邀您深入學習師父的慈悲心意，長養你我心中的慈心。">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -461,7 +468,7 @@
                                 <!-- 班級 -->
                                 <div>
                                     <label for="class-num" class="block text-xs font-medium text-earth-600 mb-1">班級 (3位數)</label>
-                                    <input type="text" id="class-num" name="classNum" placeholder="例如：002" maxlength="4" required
+                                    <input type="text" id="class-num" name="classNum" placeholder="例如：002" maxlength="3" inputmode="numeric" autocomplete="off" required
                                         class="w-full bg-earth-50 border border-earth-300 text-earth-900 text-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:bg-white transition-all">
                                 </div>
                             </div>
@@ -476,7 +483,7 @@
                                 聯繫電話 <span class="text-rose-500">*</span>
                             </label>
                             <div class="relative">
-                                <input type="tel" id="phone" name="phone" placeholder="09XX-XXXXXX" required
+                                <input type="tel" id="phone" name="phone" placeholder="09XX-XXXXXX" maxlength="11" inputmode="tel" autocomplete="tel" required
                                     class="w-full bg-earth-50 border border-earth-300 text-earth-900 text-sm rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:bg-white transition-all">
                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-earth-600">
                                     <i class="fa-solid fa-mobile-screen-button"></i>
@@ -493,7 +500,7 @@
                                 LINE ID <span class="text-xs font-normal text-earth-600">(選填)</span>
                             </label>
                             <div class="relative">
-                                <input type="text" id="line-id" name="lineId" placeholder="輸入ID，以利活動聯繫"
+                                <input type="text" id="line-id" name="lineId" placeholder="輸入ID，以利活動聯繫" maxlength="50" autocomplete="off"
                                     class="w-full bg-earth-50 border border-earth-300 text-earth-900 text-sm rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:bg-white transition-all">
                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-emerald-600">
                                     <i class="fa-brands fa-line text-lg"></i>
@@ -507,7 +514,7 @@
                                 電子信箱 (Email) <span class="text-xs font-normal text-forest-700">（填寫後可自動寄送報名回條至信箱）</span>
                             </label>
                             <div class="relative">
-                                <input type="email" id="email" name="email" placeholder="example@gmail.com"
+                                <input type="email" id="email" name="email" placeholder="example@gmail.com" maxlength="100" autocomplete="email"
                                     class="w-full bg-earth-50 border border-earth-300 text-earth-900 text-sm rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:bg-white transition-all">
                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-forest-600">
                                     <i class="fa-regular fa-envelope"></i>
@@ -809,292 +816,6 @@
         </div>
     </div>
 
-    <!-- Admin Drawer / Modal -->
-    <div id="admin-modal" class="fixed inset-0 bg-earth-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 modal-fade opacity-0 pointer-events-none">
-        <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl border border-earth-200 overflow-hidden flex flex-col max-h-[90vh]">
-            
-            <!-- Modal Header -->
-            <div class="bg-earth-900 text-white p-5 flex items-center justify-between">
-                <div class="flex items-center gap-2.5">
-                    <i class="fa-solid fa-cloud-arrow-up text-emerald-400 text-xl"></i>
-                    <div>
-                        <h3 class="font-bold text-lg font-title">Google 雲端試算表自動同步設定</h3>
-                        <p class="text-xs text-earth-300 font-mono">ID: 1i70R06W6_c83wjZWbTSvYEImuS1_5-5SfJ-or4HkARA</p>
-                    </div>
-                </div>
-                <button id="close-admin-btn" class="text-earth-300 hover:text-white p-1.5 rounded-lg transition-all">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
-            </div>
-
-            <div class="p-5 overflow-y-auto space-y-6 flex-1 text-xs">
-                
-                <!-- Target Sheet Information Banner -->
-                <div class="bg-forest-50 border border-forest-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                    <div class="space-y-1">
-                        <div class="flex items-center gap-2">
-                            <span class="bg-forest-600 text-white text-[11px] font-bold px-2 py-0.5 rounded-md">專屬目標試算表已綁定</span>
-                            <span class="text-forest-800 font-bold">慈心30週年報名結果檔</span>
-                        </div>
-                        <p class="text-earth-600 font-mono text-[11px]">
-                            https://docs.google.com/spreadsheets/d/1i70R06W6_c83wjZWbTSvYEImuS1_5-5SfJ-or4HkARA/edit
-                        </p>
-                    </div>
-                    <a href="https://docs.google.com/spreadsheets/d/1i70R06W6_c83wjZWbTSvYEImuS1_5-5SfJ-or4HkARA/edit" target="_blank"
-                       class="shrink-0 inline-flex items-center gap-1.5 bg-forest-600 hover:bg-forest-700 text-white font-bold px-3.5 py-2 rounded-xl transition-all shadow-sm">
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        <span>開啟此雲端試算表</span>
-                    </a>
-                </div>
-
-                <!-- Setup Guide & Code Snippet Container -->
-                <div class="bg-earth-50 rounded-2xl p-4 border border-earth-200 space-y-3">
-                    <div class="flex items-center justify-between">
-                        <h4 class="font-bold text-earth-800 text-sm flex items-center gap-2">
-                            <i class="fa-solid fa-code text-forest-600"></i>
-                            一鍵部署 Google Apps Script 腳本 (`Code.gs`)
-                        </h4>
-                        <button id="copy-gas-code-btn" class="bg-amberTea-500 hover:bg-amberTea-600 text-white font-bold px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 text-[11px]">
-                            <i class="fa-regular fa-copy"></i>
-                            <span>複製腳本程式碼</span>
-                        </button>
-                    </div>
-                    
-                    <ol class="list-decimal list-inside space-y-1 text-earth-700 leading-relaxed">
-                        <li>點擊「開啟此雲端試算表」→ 上方選單點選 <b>擴充功能</b> → <b>Apps Script</b>。</li>
-                        <li>清空預設程式碼，貼上右下方方框程式碼，點擊上方的 <b>儲存 (💾)</b>。</li>
-                        <li>點擊右上角 <b>部署</b> → <b>新增部署</b> → 選擇類型 <b>網頁應用程式</b>。</li>
-                        <li>「誰有存取權」請改為 <b>「所有人 (Anyone)」</b>，最後點擊 <b>部署</b> 並給予授權。</li>
-                        <li>複製獲得的 <b>網頁應用程式網址 (Web App URL)</b>，將其貼入下方欄位並點擊儲存！</li>
-                    </ol>
-                    <p class="text-[11px] text-forest-800 bg-forest-100/80 px-3 py-2 rounded-xl font-medium">
-                        💡 名額同步說明：更新上方 `Code.gs` 並重新部署後，網頁會自動讀取 Google 試算表中該活動欄位標記為 <b>「V」</b> 的筆數來計算剩餘名額（上限 40 位）。
-                    </p>
-
-                    <div class="relative mt-2">
-                        <pre id="gas-code" class="bg-earth-900 text-emerald-300 p-3.5 rounded-xl text-[11px] font-mono leading-relaxed overflow-x-auto max-h-40 border border-earth-800 select-all">// Google Apps Script Code for Sheet ID: 1i70R06W6_c83wjZWbTSvYEImuS1_5-5SfJ-or4HkARA
-const SPREADSHEET_ID = '1i70R06W6_c83wjZWbTSvYEImuS1_5-5SfJ-or4HkARA';
-const EVENT2_COL_HEADER = '1/16 (六) 掏心柑，封茶香 客家酸柑茶手作體驗與蔬食饗宴';
-
-function getTargetSheet_() {
-  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-  return ss.getSheetByName('報名名單') || ss.getSheets()[0];
-}
-
-function countEvent2MarkedV_() {
-  const sheet = getTargetSheet_();
-  const lastRow = sheet.getLastRow();
-  const lastCol = sheet.getLastColumn();
-  if (lastRow &lt; 2 || lastCol &lt; 1) return 0;
-
-  const headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
-  let targetColIdx = headers.findIndex(h =&gt; String(h).trim() === EVENT2_COL_HEADER);
-  if (targetColIdx === -1) {
-    targetColIdx = lastCol - 1; // 預設最後一欄為 1/16 活動 V 欄位
-  }
-
-  const values = sheet.getRange(2, targetColIdx + 1, lastRow, 1).getValues();
-  let vCount = 0;
-  for (let i = 0; i &lt; values.length; i++) {
-    const cellVal = String(values[i][0] || '').trim().toUpperCase();
-    if (cellVal === 'V') {
-      vCount++;
-    }
-  }
-  return vCount;
-}
-
-function doPost(e) {
-  try {
-    const sheet = getTargetSheet_();
-    
-    // Ensure Header Row Exists
-    if (sheet.getLastRow() === 0) {
-      sheet.appendRow([
-        '報名編號', '報名時間', '區域', '上課地點', '年度', '系列', '班級', 
-        '完整班別', '聯繫電話', 'LINE ID', '電子信箱', '報名項目彙整', 
-        '1/4(一)起~慈心理念班', EVENT2_COL_HEADER
-      ]);
-      sheet.getRange(1, 1, 1, 14).setFontWeight('bold').setBackground('#e1f2e5');
-    }
-    
-    const raw = (e &amp;&amp; e.parameter &amp;&amp; e.parameter.payload)
-      ? e.parameter.payload
-      : (e &amp;&amp; e.postData &amp;&amp; e.postData.contents ? e.postData.contents : '{}');
-    const postData = JSON.parse(raw);
-    const eventsArr = postData.events || [];
-    
-    const hasEvent1 = eventsArr.includes('1/4(一)起~慈心理念班') ? 'V' : '';
-    const hasEvent2 = eventsArr.includes(EVENT2_COL_HEADER) ? 'V' : '';
-    
-    // Force text formatting with single quotes to prevent leading zeros from disappearing
-    const classNumText = "'" + (postData.classNum || (postData.classCode ? postData.classCode.slice(-3) : ''));
-    const phoneText = "'" + postData.phone;
-    
-    sheet.appendRow([
-      postData.id || '',
-      postData.time,
-      postData.region,
-      postData.location || '中苑本部',
-      postData.classYear || '',
-      postData.classSeries || '',
-      classNumText,
-      postData.classCode,
-      phoneText,
-      postData.lineId || '',
-      postData.email || '',
-      eventsArr.join('; '),
-      hasEvent1,
-      hasEvent2
-    ]);
-
-    // 自動寄送報名回條至使用者填寫的 Email
-    if (postData.email &amp;&amp; /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(postData.email).trim())) {
-      const recipientEmail = String(postData.email).trim();
-      const subject = '【慈心30週年系列活動】報名成功回條 (' + (postData.id || '') + ')';
-      const body = [
-        '您好，感謝您報名「慈心❸⓿週年」系列活動！以下為您的報名回條資訊：',
-        '----------------------------------------',
-        '報名編號：#' + (postData.id || ''),
-        '報名時間：' + (postData.time || ''),
-        '所屬區域：' + (postData.region || ''),
-        '上課地點：' + (postData.location || '中苑本部'),
-        '研討班別：' + (postData.classCode || '') + '班',
-        '聯繫電話：' + (postData.phone || ''),
-        'LINE ID：' + (postData.lineId || '未填寫'),
-        '電子信箱：' + recipientEmail,
-        '報名項目：' + (eventsArr.length ? eventsArr.join('、') : '無'),
-        '----------------------------------------',
-        '主場：台中學苑、區域教室連線學習（僅開放廣論學員報名）',
-        '慈心有機農業發展基金會 敬上'
-      ].join('\n');
-
-      MailApp.sendEmail({
-        to: recipientEmail,
-        subject: subject,
-        body: body
-      });
-    }
-    
-    return ContentService.createTextOutput(JSON.stringify({ status: 'success', message: '已成功寫入試算表並寄出回條！' }))
-      .setMimeType(ContentService.MimeType.JSON);
-  } catch (err) {
-    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.toString() }))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-}
-
-function doGet(e) {
-  try {
-    const vCount = countEvent2MarkedV_();
-    const callback = e &amp;&amp; e.parameter &amp;&amp; e.parameter.callback;
-    const payload = JSON.stringify({
-      status: 'ok',
-      bookedCount: vCount,
-      remainingQuota: Math.max(0, 40 - vCount)
-    });
-
-    if (callback) {
-      return ContentService.createTextOutput(callback + '(' + payload + ')')
-        .setMimeType(ContentService.MimeType.JAVASCRIPT);
-    }
-    return ContentService.createTextOutput(payload)
-      .setMimeType(ContentService.MimeType.JSON);
-  } catch (err) {
-    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.toString() }))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-}</pre>
-                    </div>
-                </div>
-
-                <!-- Web App URL Setting Form -->
-                <div class="space-y-3 bg-white p-4 rounded-2xl border border-earth-200">
-                    <label for="script-url-input" class="block font-bold text-earth-800 text-xs">
-                        Google Apps Script Web App URL (網頁應用程式網址)
-                    </label>
-                    <div class="flex flex-col sm:flex-row gap-2">
-                        <input type="url" id="script-url-input" 
-                            placeholder="https://script.google.com/macros/s/AKfycb.../exec"
-                            class="flex-1 bg-earth-50 border border-earth-300 text-earth-900 text-xs rounded-xl px-3.5 py-2.5 focus:ring-2 focus:ring-forest-500 font-mono">
-                        <button id="save-url-btn" class="bg-forest-600 hover:bg-forest-700 text-white font-bold px-4 py-2.5 rounded-xl transition-all shadow shrink-0 flex items-center justify-center gap-1.5">
-                            <i class="fa-solid fa-floppy-disk"></i>
-                            <span>儲存網址設定</span>
-                        </button>
-                    </div>
-
-                    <!-- Smart Error Warning for User standard sheet URL mistake -->
-                    <div id="url-warning" class="hidden bg-rose-50 border border-rose-200 text-rose-700 p-3 rounded-xl text-xs space-y-1">
-                        <div class="font-bold flex items-center gap-1.5">
-                            <i class="fa-solid fa-circle-exclamation text-rose-500"></i>
-                            這不是發布後的 Web App 網址喔！
-                        </div>
-                        <p class="leading-relaxed">
-                            您輸入的是 Google 試算表本身的網址。目標試算表 ID（`1i70R06W6...`）已直接寫在上方腳本中。
-                            請在 Apps Script 中點擊右上角「<b>部署</b>」→「<b>新增部署</b>」，授權後複製結尾為 <b>`/exec`</b> 的網址貼在此處。
-                        </p>
-                    </div>
-
-                    <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-earth-200">
-                        <button id="test-script-btn" class="bg-amberTea-100 hover:bg-amberTea-200 text-amberTea-700 font-bold px-3.5 py-1.5 rounded-lg transition-all text-xs flex items-center gap-1.5">
-                            <i class="fa-solid fa-vial"></i>
-                            <span>測試連線寫入一筆測試資料</span>
-                        </button>
-
-                        <button id="download-configured-html-btn" class="bg-forest-100 hover:bg-forest-200 text-forest-700 font-bold px-3.5 py-1.5 rounded-lg transition-all text-xs flex items-center gap-1.5">
-                            <i class="fa-solid fa-file-arrow-down"></i>
-                            <span>下載已內建網址的正式版 index.html</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Modal Actions & Local Storage List Bar -->
-                <div class="bg-earth-50 rounded-2xl p-4 border border-earth-200 space-y-3">
-                    <div class="flex flex-wrap items-center justify-between gap-3">
-                        <div class="text-xs text-earth-700 font-medium">
-                            本機暫存備份筆數：<span id="data-count" class="font-bold text-forest-700 text-sm">0</span> 筆
-                        </div>
-                        <div class="flex gap-2">
-                            <button id="clear-data-btn" class="bg-rose-100 hover:bg-rose-200 text-rose-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1">
-                                <i class="fa-regular fa-trash-can"></i> 清空暫存
-                            </button>
-                            <button id="export-csv-btn" class="bg-forest-600 hover:bg-forest-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shadow">
-                                <i class="fa-solid fa-file-csv"></i> 匯出 CSV (UTF-8 BOM)
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Table Body Container -->
-                    <div class="overflow-x-auto max-h-48 border border-earth-200 rounded-xl bg-white">
-                        <table class="w-full text-left text-xs text-earth-800 border-collapse">
-                            <thead class="sticky top-0 bg-earth-100 border-b border-earth-200">
-                                <tr>
-                                    <th class="p-2.5 font-bold">#</th>
-                                    <th class="p-2.5 font-bold">時間</th>
-                                    <th class="p-2.5 font-bold">區域</th>
-                                    <th class="p-2.5 font-bold">上課地點</th>
-                                    <th class="p-2.5 font-bold">研討班別</th>
-                                    <th class="p-2.5 font-bold">聯繫電話</th>
-                                    <th class="p-2.5 font-bold">LINE ID</th>
-                                    <th class="p-2.5 font-bold">Email</th>
-                                    <th class="p-2.5 font-bold">報名活動</th>
-                                    <th class="p-2.5 font-bold text-center">操作</th>
-                                </tr>
-                            </thead>
-                            <tbody id="admin-table-body" class="divide-y divide-earth-200">
-                                <!-- Populated by JS -->
-                            </tbody>
-                        </table>
-                        <div id="no-data-msg" class="text-center py-6 text-earth-600 text-xs hidden">
-                            尚無任何本機備份紀錄
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
     <!-- JavaScript Logic -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -1187,9 +908,7 @@ function doGet(e) {
                 if (locationError) locationError.classList.add('hidden');
             });
 
-            const WEB_APP_URL_KEY = 'cixin_30th_gas_webapp_url';
-            const DEFAULT_GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxIMbGUYaAHG1XdSkhtSH1uEOi5qLEHfr8KvdYFiPNICIlyx2WaxVlmcVqFcTI3KvTc/exec';
-            let savedWebAppUrl = localStorage.getItem(WEB_APP_URL_KEY) || DEFAULT_GAS_WEB_APP_URL;
+            const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxIMbGUYaAHG1XdSkhtSH1uEOi5qLEHfr8KvdYFiPNICIlyx2WaxVlmcVqFcTI3KvTc/exec';
             let lastSubmissionData = null;
             let lastSheetLatestId = null;
 
@@ -1451,11 +1170,10 @@ function doGet(e) {
                 const originalBtnHtml = submitBtn.innerHTML;
                 submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>同步寫入雲端試算表與寄送回條中...</span>`;
 
-                // Post to Google Sheet Web App if configured
-                const webAppUrl = savedWebAppUrl || '';
-                if (webAppUrl && webAppUrl.startsWith('http')) {
+                // Post to Google Sheet Web App
+                if (GAS_WEB_APP_URL && GAS_WEB_APP_URL.startsWith('https://')) {
                     try {
-                        await sendToGoogleSheet(webAppUrl, payload);
+                        await sendToGoogleSheet(GAS_WEB_APP_URL, payload);
                         // 因 no-cors 無法直接讀取 POST 回應本體，短暫等待後透過 JSONP 取得後端實際產生的編號與最新名額
                         await new Promise(resolve => setTimeout(resolve, 1200));
                         const syncedInfo = await syncQuotaFromSheet({ returnData: true });
@@ -1705,7 +1423,7 @@ function doGet(e) {
             }
 
             function syncQuotaFromSheet(options = {}) {
-                const url = (savedWebAppUrl || '').trim();
+                const url = (GAS_WEB_APP_URL || '').trim();
                 if (!url || !url.startsWith('https://script.google.com/')) {
                     if (quotaSyncStatusEl) quotaSyncStatusEl.textContent = '名額統計中';
                     updateQuotaDisplay();
