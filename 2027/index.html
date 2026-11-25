@@ -192,6 +192,10 @@
                         <span>僅開放 廣論學員 報名</span>
                     </p>
 
+                    <p class="mb-4 text-xs sm:text-sm text-earth-700 leading-relaxed bg-forest-50/70 border border-forest-500/20 rounded-xl px-3.5 py-2.5">
+                        慈心基金會邁入30週年，依著師父的慈悲心開展出有機、綠保、蔬食、淨塑等多面向的環境守護行動，邀您深入學習師父的慈悲心意，長養你我心中的慈心。
+                    </p>
+
                     <div class="overflow-x-auto rounded-2xl border border-earth-200 shadow-sm bg-white">
                         <table class="w-full text-center border-collapse text-xs sm:text-sm">
                             <thead>
@@ -558,9 +562,13 @@
                         <!-- Event 2 Card -->
                         <label id="event-2-card" class="event-card relative bg-earth-50/50 border-2 border-earth-200 rounded-2xl p-4 sm:p-5 cursor-pointer hover:border-forest-500/50 flex items-start gap-4">
                             <input type="checkbox" name="events" value="1/16 (六) 掏心柑，封茶香 客家酸柑茶手作體驗與蔬食饗宴" class="sr-only event-checkbox">
-                            <div class="checkbox-custom w-6 h-6 rounded-lg border-2 border-earth-300 bg-white flex items-center justify-center text-white shrink-0 mt-0.5">
+                            <div id="event-2-checkbox-box" class="checkbox-custom w-6 h-6 rounded-lg border-2 border-earth-300 bg-white flex items-center justify-center text-white shrink-0 mt-0.5">
                                 <i class="fa-solid fa-check text-xs transition-transform transform scale-0"></i>
                             </div>
+                            <span id="event-2-full-badge" class="hidden shrink-0 mt-0.5 inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-extrabold bg-rose-600 text-white shadow-xs">
+                                <i class="fa-solid fa-ban text-[10px]"></i>
+                                <span>已額滿！</span>
+                            </span>
                             <div class="flex-1">
                                 <div class="flex flex-wrap items-center justify-between gap-2">
                                     <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-bold bg-amberTea-100 text-amberTea-700">
@@ -594,7 +602,7 @@
                         <span>確認送出報名</span>
                     </button>
                     <p class="text-center text-xs text-earth-600 mt-3 flex items-center justify-center gap-1.5">
-                        <i class="fa-solid fa-shield-halved text-forest-500"></i> 您填寫的資料僅用於「慈心30週年」系列活動聯繫與通知
+                        <i class="fa-solid fa-shield-halved text-forest-500"></i> 此資料僅用於活動聯繫與通知
                     </p>
                 </div>
 
@@ -609,7 +617,7 @@
                     <div class="bg-amber-50/70 border border-amber-200 rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div class="space-y-2">
                             <!-- 主標 -->
-                            <div class="text-base sm:text-lg font-extrabold tracking-wide text-amberTea-800 font-title">
+                            <div class="text-base sm:text-lg font-extrabold tracking-wide text-amberTea-700 font-title">
                                 2026/12/11 (五) 慈心年度廣大供養
                             </div>
                             <!-- 副標 -->
@@ -638,20 +646,20 @@
                     <!-- Card 3: 2027/03/14 (日) 田裡有腳印市集 -->
                     <div class="bg-rose-50 border border-rose-200 rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div class="space-y-2">
-                            <div class="flex flex-wrap items-center gap-1.5">
+                            <div class="flex flex-wrap items-center gap-1.5 font-title">
                                 <span class="text-base sm:text-lg font-extrabold tracking-wide text-rose-800">2027/03/14 (日)</span>
                                 <span class="text-base sm:text-lg font-extrabold tracking-wide text-rose-800">田裡有腳印市集</span>
                             </div>
                             <h3 class="text-base sm:text-lg font-extrabold text-forest-800 font-title leading-snug flex items-center gap-1.5">
                                 <i class="fa-solid fa-seedling text-forest-600"></i>
-                                <span>綠保Ｘ蔬食Ｘ給土地的美好回禮</span>
+                                <span>綠色保育 X 蔬食Ｘ給土地的美好回禮</span>
                             </h3>
                             <div class="space-y-1 text-xs sm:text-sm text-earth-800 font-bold">
                                 <p class="flex items-center gap-1.5">
                                     <i class="fa-solid fa-location-dot text-rose-600"></i>
                                     <span>捷運松竹站 2號出口 X 台鐵松竹站</span>
                                 </p>
-                                <p class="text-xs text-earth-700 font-medium" style="padding-left: 1em;">
+                                <p class="text-xs text-earth-700 font-medium" style="padding-left: 2em;">
                                     (臺中市北屯區北屯路458號)
                                 </p>
                             </div>
@@ -1120,6 +1128,8 @@ function doGet(e) {
             const eventCards = document.querySelectorAll('.event-card');
             const event2Checkbox = document.querySelector('.event-checkbox[value*="1/16 (六) 掏心柑"]');
             const event2Card = document.getElementById('event-2-card');
+            const event2CheckboxBox = document.getElementById('event-2-checkbox-box');
+            const event2FullBadge = document.getElementById('event-2-full-badge');
             const quotaTextEl = document.getElementById('quota-text');
             const quotaBadgeEl = document.getElementById('quota-badge');
             const quotaSyncStatusEl = document.getElementById('quota-sync-status');
@@ -1655,32 +1665,38 @@ function doGet(e) {
                 const baseRemaining = getRemainingQuota();
                 const isSelected = Boolean(event2Checkbox && event2Checkbox.checked);
                 const displayRemaining = Math.max(0, baseRemaining - (isSelected ? 1 : 0));
+                const isFull = baseRemaining <= 0 && !isSelected;
 
                 if (quotaTextEl) {
                     quotaTextEl.textContent = `剩餘 ${displayRemaining} / ${EVENT2_QUOTA_LIMIT} 位`;
                 }
 
-                const isFull = baseRemaining <= 0 && !isSelected;
-
                 if (event2Checkbox) {
                     event2Checkbox.disabled = isFull;
                 }
 
+                // 額滿時直接將左側勾選框替換為「已額滿！」徽章，並隱藏右上角名額徽章（避免重複顯示「已額滿」）
+                if (event2CheckboxBox) {
+                    event2CheckboxBox.classList.toggle('hidden', isFull);
+                }
+                if (event2FullBadge) {
+                    event2FullBadge.classList.toggle('hidden', !isFull);
+                }
+
                 if (event2Card) {
-                    event2Card.classList.toggle('opacity-60', isFull);
+                    event2Card.classList.remove('opacity-60');
                     event2Card.classList.toggle('cursor-not-allowed', isFull);
                     event2Card.classList.toggle('cursor-pointer', !isFull);
                 }
 
                 if (quotaBadgeEl) {
+                    quotaBadgeEl.classList.toggle('hidden', isFull);
                     quotaBadgeEl.classList.remove(
                         'bg-rose-100', 'text-rose-700', 'border-rose-200',
                         'bg-amberTea-100', 'text-amberTea-700', 'border-amberTea-500/30',
                         'bg-earth-200', 'text-earth-700', 'border-earth-300'
                     );
-                    if (displayRemaining <= 0) {
-                        quotaBadgeEl.classList.add('bg-earth-200', 'text-earth-700', 'border-earth-300');
-                    } else if (displayRemaining <= 5) {
+                    if (displayRemaining <= 5) {
                         quotaBadgeEl.classList.add('bg-amberTea-100', 'text-amberTea-700', 'border-amberTea-500/30');
                     } else {
                         quotaBadgeEl.classList.add('bg-rose-100', 'text-rose-700', 'border-rose-200');
