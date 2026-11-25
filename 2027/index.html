@@ -359,6 +359,23 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- 姓名 -->
+                        <div class="space-y-1.5 md:col-span-2">
+                            <label for="applicant-name" class="block text-sm font-bold text-earth-800">
+                                姓名 <span class="text-rose-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <input type="text" id="applicant-name" name="name" placeholder="請輸入您的真實姓名" maxlength="30" autocomplete="name" required
+                                    class="w-full bg-earth-50 border border-earth-300 text-earth-900 text-sm rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:bg-white transition-all">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-forest-600">
+                                    <i class="fa-regular fa-user"></i>
+                                </div>
+                            </div>
+                            <p id="name-error" class="text-xs text-rose-500 hidden flex items-center gap-1 mt-1">
+                                <i class="fa-solid fa-circle-exclamation"></i> 請輸入您的姓名
+                            </p>
+                        </div>
+
                         <!-- 區域 -->
                         <div class="space-y-1.5 md:col-span-2">
                             <label for="region" class="block text-sm font-bold text-earth-800">
@@ -698,6 +715,10 @@
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                    <div class="sm:col-span-2">
+                        <span class="text-xs text-earth-600 block">姓名</span>
+                        <span id="receipt-name" class="font-bold text-earth-900">--</span>
+                    </div>
                     <div>
                         <span class="text-xs text-earth-600 block">所屬區域</span>
                         <span id="receipt-region" class="font-bold text-earth-800">--</span>
@@ -833,6 +854,8 @@
 
             // Form Elements
             const form = document.getElementById('registration-form');
+            const nameInput = document.getElementById('applicant-name');
+            const nameError = document.getElementById('name-error');
             const regionSelect = document.getElementById('region');
             const locationContainer = document.getElementById('location-container');
             const locationSelect = document.getElementById('location');
@@ -1052,6 +1075,7 @@
                 phoneError.classList.add('hidden');
             });
 
+            nameInput?.addEventListener('input', () => nameError?.classList.add('hidden'));
             lineIdInput?.addEventListener('input', () => lineError?.classList.add('hidden'));
             emailInput?.addEventListener('input', () => emailError?.classList.add('hidden'));
 
@@ -1063,6 +1087,15 @@
                 let isValid = true;
                 const validationMessages = [];
                 let firstInvalidEl = null;
+
+                // Validate Name
+                const nameVal = (nameInput?.value || '').trim();
+                if (!nameVal) {
+                    nameError?.classList.remove('hidden');
+                    validationMessages.push('姓名：請輸入您的姓名');
+                    if (!firstInvalidEl) firstInvalidEl = nameInput;
+                    isValid = false;
+                }
 
                 // Validate Region
                 if (!regionSelect.value) {
@@ -1152,6 +1185,7 @@
 
                 const payload = {
                     id: provisionalId,
+                    name: nameVal,
                     region: regionSelect.value,
                     location: isLocationRequired ? locationSelect.value : '中苑本部',
                     classYear: classYearVal,
@@ -1226,6 +1260,7 @@
             // ----------------------------------------------------
             function renderReceipt(data) {
                 document.getElementById('receipt-id').textContent = `#${data.id}`;
+                document.getElementById('receipt-name').textContent = data.name || '--';
                 document.getElementById('receipt-region').textContent = data.region;
                 
                 const locationWrapper = document.getElementById('receipt-location-wrapper');
@@ -1288,6 +1323,7 @@
                 }).join('\n');
                 const summary = `【慈心30週年活動報名資訊】\n` +
                     `報名編號：#${lastSubmissionData.id}\n` +
+                    `姓名：${lastSubmissionData.name || '--'}\n` +
                     `區域/地點：${lastSubmissionData.region}${locStr}\n` +
                     `研討班別：${lastSubmissionData.classCode}班\n` +
                     `聯繫電話：${lastSubmissionData.phone}\n` +
