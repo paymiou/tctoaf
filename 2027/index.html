@@ -657,8 +657,8 @@
                 </div>
 
                 <div class="pt-3 border-t border-earth-200">
-                    <span class="text-xs text-earth-600 block mb-1">已報名活動項目</span>
-                    <ul id="receipt-events" class="space-y-1.5">
+                    <span class="text-xs sm:text-sm text-earth-800 font-bold block mb-2">「請加入LINE群組」接收最新訊息</span>
+                    <ul id="receipt-events" class="space-y-2">
                         <!-- Populated by JS -->
                     </ul>
                 </div>
@@ -714,6 +714,34 @@
                 <div class="pt-2">
                     <button type="button" id="confirm-classroom-btn" class="w-full bg-forest-600 hover:bg-forest-700 text-white font-bold py-2.5 px-4 rounded-xl text-sm transition-all cursor-pointer">
                         我知道了
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Required Fields Alert Modal -->
+    <div id="validation-modal" class="fixed inset-0 bg-earth-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 modal-fade opacity-0 pointer-events-none">
+        <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl border border-rose-200 overflow-hidden">
+            <div class="bg-rose-600 text-white p-5 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-200 text-lg"></i>
+                    <h3 class="font-bold text-base sm:text-lg font-title">必填欄位尚未完成</h3>
+                </div>
+                <button type="button" id="close-validation-btn" class="text-rose-100 hover:text-white p-1.5 rounded-lg transition-all cursor-pointer">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-4">
+                <p class="text-sm font-medium text-earth-800">
+                    請先完成以下必填項目或確認格式後再送出報名：
+                </p>
+                <ul id="validation-error-list" class="bg-rose-50 border border-rose-200 rounded-2xl p-4 space-y-2 text-xs sm:text-sm text-rose-800 font-medium list-disc list-inside">
+                    <!-- Populated dynamically on validation error -->
+                </ul>
+                <div class="pt-2">
+                    <button type="button" id="confirm-validation-btn" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-2.5 px-4 rounded-xl text-sm transition-all cursor-pointer shadow">
+                        前往填寫
                     </button>
                 </div>
             </div>
@@ -1046,6 +1074,10 @@ function doGet(e) {
 
             const EVENT2_QUOTA_LIMIT = 40;
             const EVENT2_NAME = '1/16 (六) 掏心柑，封茶香 客家酸柑茶手作體驗與蔬食饗宴';
+            const EVENT_GROUP_LINKS = {
+                '1/4(一)起~慈心理念班': 'https://line.me/ti/g/HfkvH3tG5j',
+                [EVENT2_NAME]: 'https://line.me/ti/g/amaQsX_bm3'
+            };
             let sheetBookedCount = null;
             const QUOTA_POLL_INTERVAL_MS = 15000;
             const regionError = document.getElementById('region-error');
@@ -1177,6 +1209,52 @@ function doGet(e) {
                 }
             });
 
+            // Required Fields Validation Modal Elements
+            const validationModal = document.getElementById('validation-modal');
+            const validationErrorList = document.getElementById('validation-error-list');
+            const closeValidationBtn = document.getElementById('close-validation-btn');
+            const confirmValidationBtn = document.getElementById('confirm-validation-btn');
+            let firstInvalidTargetEl = null;
+
+            function showValidationModal(messages, firstInvalidEl = null) {
+                if (!validationModal || !validationErrorList) return;
+                firstInvalidTargetEl = firstInvalidEl;
+                validationErrorList.innerHTML = '';
+                messages.forEach((msg) => {
+                    const li = document.createElement('li');
+                    li.textContent = msg;
+                    validationErrorList.appendChild(li);
+                });
+                validationModal.classList.remove('opacity-0', 'pointer-events-none');
+            }
+
+            function hideValidationModal(scrollToInvalid = false) {
+                if (!validationModal) return;
+                validationModal.classList.add('opacity-0', 'pointer-events-none');
+                if (scrollToInvalid && firstInvalidTargetEl) {
+                    const target = firstInvalidTargetEl;
+                    firstInvalidTargetEl = null;
+                    setTimeout(() => {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        if (typeof target.focus === 'function') {
+                            try {
+                                target.focus({ preventScroll: true });
+                            } catch (_) {
+                                target.focus();
+                            }
+                        }
+                    }, 120);
+                }
+            }
+
+            closeValidationBtn?.addEventListener('click', () => hideValidationModal(false));
+            confirmValidationBtn?.addEventListener('click', () => hideValidationModal(true));
+            validationModal?.addEventListener('click', (e) => {
+                if (e.target === validationModal) {
+                    hideValidationModal(false);
+                }
+            });
+
             // ----------------------------------------------------
             // 3. Phone Input Auto-Formatting (09XX-XXXXXX)
             // ----------------------------------------------------
@@ -1201,10 +1279,14 @@ function doGet(e) {
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 let isValid = true;
+                const validationMessages = [];
+                let firstInvalidEl = null;
 
                 // Validate Region
                 if (!regionSelect.value) {
                     regionError.classList.remove('hidden');
+                    validationMessages.push('區域：請選擇您的所屬區域');
+                    if (!firstInvalidEl) firstInvalidEl = regionSelect;
                     isValid = false;
                 }
 
@@ -1212,6 +1294,8 @@ function doGet(e) {
                 const isLocationRequired = regionSelect.value && regionSelect.value !== '中苑本部';
                 if (isLocationRequired && !locationSelect.value) {
                     if (locationError) locationError.classList.remove('hidden');
+                    validationMessages.push('上課地點：請選擇您的上課地點');
+                    if (!firstInvalidEl) firstInvalidEl = locationSelect;
                     isValid = false;
                 }
 
@@ -1220,6 +1304,12 @@ function doGet(e) {
                 const classNumRegex = /^\d{3}$/;
                 if (!yearSelect.value || !seriesSelect.value || !classNumRegex.test(numVal)) {
                     classError.classList.remove('hidden');
+                    validationMessages.push('研討班別：請選擇年度、系列，並輸入剛好 3 位數字的班級（例如：002）');
+                    if (!firstInvalidEl) {
+                        firstInvalidEl = !yearSelect.value
+                            ? yearSelect
+                            : (!seriesSelect.value ? seriesSelect : classNumInput);
+                    }
                     isValid = false;
                 }
 
@@ -1228,6 +1318,8 @@ function doGet(e) {
                 const phoneRegex = /^09\d{2}-\d{6}$/;
                 if (!phoneRegex.test(phoneVal)) {
                     phoneError.classList.remove('hidden');
+                    validationMessages.push('聯繫電話：請輸入正確的手機號碼格式（例如：0912-345678）');
+                    if (!firstInvalidEl) firstInvalidEl = phoneInput;
                     isValid = false;
                 }
 
@@ -1236,6 +1328,8 @@ function doGet(e) {
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (emailVal && !emailRegex.test(emailVal)) {
                     emailError?.classList.remove('hidden');
+                    validationMessages.push('電子信箱 (Email)：請輸入有效的電子信箱格式');
+                    if (!firstInvalidEl) firstInvalidEl = emailInput;
                     isValid = false;
                 }
 
@@ -1246,18 +1340,21 @@ function doGet(e) {
 
                 if (selectedEvents.length === 0) {
                     eventsError.classList.remove('hidden');
+                    validationMessages.push('我要報名：請至少勾選一項欲報名的活動');
+                    if (!firstInvalidEl) firstInvalidEl = eventsError;
                     isValid = false;
                 }
 
                 // Double check quota before submission
                 if (selectedEvents.includes(EVENT2_NAME) && getRemainingQuota() <= 0) {
                     showToast('抱歉！1/16 手作體驗名額（40 位）已額滿，請取消勾選後再送出。', 'error');
+                    showValidationModal(['1/16 手作體驗名額（40 位）已額滿，請取消勾選該項後再送出。'], event2Card);
                     updateQuotaDisplay();
                     return;
                 }
 
                 if (!isValid) {
-                    showToast('請檢查並補齊必填欄位資訊！', 'error');
+                    showValidationModal(validationMessages, firstInvalidEl);
                     return;
                 }
 
@@ -1367,8 +1464,35 @@ function doGet(e) {
                 eventsUl.innerHTML = '';
                 data.events.forEach(item => {
                     const li = document.createElement('li');
-                    li.className = "flex items-center gap-2 text-forest-700 font-bold bg-white px-3 py-2 rounded-lg border border-earth-200";
-                    li.innerHTML = `<i class="fa-solid fa-leaf text-forest-500 text-xs"></i> <span>${item}</span>`;
+                    li.className = "text-forest-700 font-bold bg-white px-3.5 py-2.5 rounded-xl border border-earth-200 space-y-1.5";
+
+                    const topRow = document.createElement('div');
+                    topRow.className = "flex items-start gap-2 text-sm";
+                    const icon = document.createElement('i');
+                    icon.className = "fa-solid fa-leaf text-forest-500 text-xs mt-1 shrink-0";
+                    const titleSpan = document.createElement('span');
+                    titleSpan.textContent = item;
+                    topRow.appendChild(icon);
+                    topRow.appendChild(titleSpan);
+                    li.appendChild(topRow);
+
+                    const groupUrl = EVENT_GROUP_LINKS[item];
+                    if (groupUrl) {
+                        const groupRow = document.createElement('div');
+                        groupRow.className = "text-xs font-medium text-earth-700 pl-5 flex flex-wrap items-center gap-1.5";
+                        const labelSpan = document.createElement('span');
+                        labelSpan.textContent = 'LINE 群組：';
+                        const linkEl = document.createElement('a');
+                        linkEl.href = groupUrl;
+                        linkEl.target = '_blank';
+                        linkEl.rel = 'noopener noreferrer';
+                        linkEl.className = 'text-forest-700 hover:text-forest-800 underline underline-offset-2 font-bold break-all';
+                        linkEl.textContent = groupUrl;
+                        groupRow.appendChild(labelSpan);
+                        groupRow.appendChild(linkEl);
+                        li.appendChild(groupRow);
+                    }
+
                     eventsUl.appendChild(li);
                 });
             }
@@ -1377,6 +1501,10 @@ function doGet(e) {
             document.getElementById('copy-btn').addEventListener('click', () => {
                 if (!lastSubmissionData) return;
                 const locStr = lastSubmissionData.region === '中苑本部' ? '' : ` (${lastSubmissionData.location})`;
+                const eventsWithGroups = lastSubmissionData.events.map(ev => {
+                    const gUrl = EVENT_GROUP_LINKS[ev];
+                    return gUrl ? `${ev}\n  LINE 群組：${gUrl}` : ev;
+                }).join('\n');
                 const summary = `【慈心30週年活動報名資訊】\n` +
                     `報名編號：#${lastSubmissionData.id}\n` +
                     `區域/地點：${lastSubmissionData.region}${locStr}\n` +
@@ -1384,7 +1512,7 @@ function doGet(e) {
                     `聯繫電話：${lastSubmissionData.phone}\n` +
                     `LINE ID：${lastSubmissionData.lineId || '未填寫'}\n` +
                     `電子信箱：${lastSubmissionData.email || '未填寫'}\n` +
-                    `報名項目：${lastSubmissionData.events.join('、 ')}\n` +
+                    `「請加入LINE群組」接收最新訊息：\n${eventsWithGroups}\n` +
                     `報名時間：${lastSubmissionData.time}`;
 
                 copyToClipboard(summary, '已複製報名資訊至剪貼簿！');
